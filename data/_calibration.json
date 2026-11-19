@@ -1,0 +1,30 @@
+{
+  "target_casa": 24621764400,
+  "actual_casa_avg": 24621764437,
+  "casa_gap_pct": 0.0,
+  "target_ldr_pct": 92.32,
+  "actual_ldr_pct": 92.32,
+  "target_npl_pct": 1.82,
+  "actual_npl_pct": 1.82,
+  "partner_npl_pct": 1.69,
+  "target_loans": 32134000000,
+  "actual_loans": 32133999304,
+  "target_dpk": 34806000000,
+  "actual_dpk_avg": 34806000019,
+  "actual_casa_ratio_pct": 70.74,
+  "npl_rescale_factor": 0.8685,
+  "rows": {
+    "customers": 24000,
+    "accounts": 27600,
+    "transactions": 1075753,
+    "balances": 288000,
+    "partners": 13
+  },
+  "anomalies": {
+    "dup": 3741,
+    "orphan": 2675,
+    "zero": 0,
+    "drift": 0
+  },
+  "notes": "NPL headline = (NPL mitra + NPL pinjaman langsung) / total kredit. CASA dihitung atas rata-rata saldo tabungan vs total DPK rata-rata."
+}

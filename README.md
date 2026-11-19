@@ -106,14 +106,19 @@ portfolio/
 │   ├── 01_calibration_report.md # target publik vs hasil dataset, per metrik (v1.1)
 │   └── 02_bab1_memo.md          # memo Bab 1 — temuan & rekomendasi
 ├── analysis/                    # keluaran Bab 1: 10 CSV + 3 PNG + summary.json
-└── data/                        # 10 CSV + 1 JSON sintetis (143 MB, via Git LFS)
+└── data/                        # TIDAK di-commit: 143 MB, dibangun ulang dari seed
 ```
+
+**Kenapa `data/` tidak disimpan.** Yang berharga dari dataset sintetis adalah **resepnya**, bukan hasilnya. `gen/generate.py` dengan seed tetap menghasilkan 143 MB identik dalam ~90 detik. Menyimpannya di repo berarti mengunggah 143 MB yang bisa dibangun ulang kapan saja — dan setiap kali model dikalibrasi ulang, 143 MB baru menumpuk lagi. Yang tetap disimpan: `data/_calibration.json` (3 KB) sebagai bukti target vs hasil, dan seluruh `analysis/` sebagai keluaran yang benar-benar dipakai di memo.
 
 ---
 
 ## 6. Cara menjalankan
 
 ```bash
+# 0. Repo ini TIDAK memuat data. Langkah 1 wajib, bukan opsional.
+#    Clone bersih ≈ 1 MB; setelah langkah 1 menjadi ≈ 145 MB.
+
 # 1. Bangun ulang dataset dari nol lalu verifikasi (≈90 detik)
 uv run python gen/generate.py
 uv run python gen/verify.py

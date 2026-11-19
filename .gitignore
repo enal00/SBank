@@ -1,0 +1,14 @@
+# Dataset sintetis = KELUARAN generator, bukan aset repo.
+# Dibangun ulang identik dengan: uv run python gen/generate.py (seed 20251118).
+# Yang disimpan adalah resepnya (gen/generate.py + data/_calibration.json), bukan 143 MB hasilnya.
+data/*
+!data/_calibration.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
