@@ -25,7 +25,7 @@ Bank digital Indonesia tumbuh cepat, tetapi pertumbuhan DPK bukan otomatis profi
 
 BOPO 91,47% menutup satu pintu: **perbaikan profitabilitas berikutnya tidak datang dari memotong biaya.** Ia harus datang dari **kualitas komposisi neraca** — dana mana yang murah *dan* lengket, kredit mana yang menghasilkan tanpa menaikkan risiko.
 
-> **Pertanyaan portofolio:**
+> **Pertanyaan Bisnis:**
 > Di mana menaruh rupiah berikutnya — menambah DPK murah, atau menambah kredit berimbal hasil tinggi — agar NIM terjaga tanpa menaikkan NPL di atas toleransi?
 
 Pertanyaan itu terlalu besar untuk dijawab sekaligus, jadi dipecah menjadi empat bab yang masing-masing punya deliverable sendiri.
@@ -160,4 +160,4 @@ Seed tetap → hasil deterministik dan dapat diaudit ulang.
 
 ---
 
-_Lisensi: kode MIT. Data sintetis, bebas dipakai dengan atribusi._
+---_Lisensi: kode MIT. Data sintetis, bebas dipakai dengan atribusi._
