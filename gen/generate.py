@@ -95,11 +95,51 @@ INCOME_W = [0.34, 0.26, 0.24, 0.12, 0.04]
 # Arketipe perilaku TERSEMBUNYI (tidak masuk dataset — analisis harus menemukannya)
 ARCH = {
     # growth: faktor bulanan; sigma: lebar distribusi kekayaan; boost/taper: perilaku nasabah baru
-    "A": dict(growth=1.022, sigma=1.25, boost=-0.30, taper=1.6, turnover=0.55, ntxn=6, share=0.0),
-    "B": dict(growth=1.004, sigma=0.78, boost=0.00, taper=1.0, turnover=1.10, ntxn=7, share=0.0),
-    "C": dict(growth=0.955, sigma=0.95, boost=0.95, taper=1.1, turnover=1.90, ntxn=4, share=0.0),
-    "D": dict(growth=0.975, sigma=0.45, boost=0.40, taper=2.0, turnover=0.25, ntxn=1, share=0.0),
+    # churn: peluang berhenti bertransaksi tiap bulan; react: peluang kembali aktif;
+    # residual: porsi saldo yang ditinggal saat berhenti (-> jadi "uang tidur")
+    "A": dict(growth=1.022, sigma=1.25, boost=-0.30, taper=1.6, turnover=0.55, ntxn=6,
+              churn=0.008, react=0.09, residual=0.12, share=0.0),
+    "B": dict(growth=1.004, sigma=0.78, boost=0.00, taper=1.0, turnover=1.10, ntxn=7,
+              churn=0.020, react=0.07, residual=0.07, share=0.0),
+    "C": dict(growth=0.955, sigma=0.95, boost=0.95, taper=1.1, turnover=1.90, ntxn=4,
+              churn=0.085, react=0.03, residual=0.04, share=0.0),
+    "D": dict(growth=0.975, sigma=0.45, boost=0.40, taper=2.0, turnover=0.25, ntxn=1,
+              churn=0.050, react=0.05, residual=0.18, share=0.0),
 }
+
+
+def build_activity():
+    """Matriks aktif/dorman per nasabah per bulan (Markov: churn & reaktivasi)."""
+    act = []
+    for i, c in enumerate(customers):
+        a = ARCH[savings_arch[i]]
+        jd = c["join_date"]
+        baru = (jd.year == 2025)
+        join_m = jd.month if baru else 1
+        row = [False] * 12
+        if baru:
+            hidup = False
+        else:
+            # nasabah lama masuk 2025 dalam kondisi stasioner: sebagian sudah dorman
+            p_dorm = a["churn"] / (a["churn"] + a["react"])
+            hidup = random.random() > p_dorm
+        for mi in range(1, 13):
+            if mi < join_m:
+                continue
+            if baru and mi == join_m:
+                hidup = True                     # bulan pertama pasti bertransaksi
+            if hidup:
+                row[mi - 1] = True
+                # kegagalan aktivasi bulan pertama jauh lebih tinggi
+                h = a["churn"] * (2.5 if (baru and mi == join_m) else 1.0)
+                if random.random() < h:
+                    hidup = False
+            else:
+                if random.random() < a["react"]:
+                    hidup = True
+                    row[mi - 1] = True
+        act.append(row)
+    return act
 
 QRIS_CATS = ["F&B", "RETAIL", "TRANSPORT", "TELCO", "UTILITY", "E-COMMERCE", "LAINNYA"]
 QRIS_W = [0.34, 0.24, 0.12, 0.07, 0.08, 0.12, 0.03]
@@ -211,6 +251,9 @@ for i in range(N_CUST):
 print("[2/8] Bentuk trajektori saldo & kalibrasi CASA ...")
 
 
+ACTIVITY = build_activity()
+
+
 def build_shapes():
     shapes = []
     for i, c in enumerate(customers):
@@ -221,16 +264,28 @@ def build_shapes():
         if jd.year == 2025:
             join_m = jd.month
         row = [0.0] * 12
+        # nasabah lama yang sudah dorman sebelum 2025 tetap menyisakan saldo kecil
+        resid = w0 * a["residual"] if join_m is None else 0.0
         for mi in range(1, 13):
             if join_m is not None and mi < join_m:
                 row[mi - 1] = 0.0
                 continue
             t = 0 if join_m is None else (mi - join_m)
+            if not ACTIVITY[i][mi - 1]:
+                # sedang dorman: saldo beku di sisa saldo terakhir
+                row[mi - 1] = resid
+                continue
             v = w0 * (a["growth"] ** t)
             if join_m is not None:
                 v *= (1.0 + a["boost"] * math.exp(-t / a["taper"]))
             v *= random.lognormvariate(0.0, 0.16)
-            row[mi - 1] = max(v, 0.0)
+            v = max(v, 0.0)
+            akhir = (mi == 12) or (not ACTIVITY[i][mi])
+            if akhir and mi < 12:
+                # bulan terakhir sebelum pergi: tarik dana, sisakan residual
+                v *= a["residual"]
+            row[mi - 1] = v
+            resid = v
         shapes.append(row)
     return shapes
 
@@ -266,7 +321,9 @@ for i, c in enumerate(customers):
     od = c["join_date"]
     last_bal = bal[i][11]
     status = "ACTIVE"
-    if last_bal < 120_000 and random.random() < 0.55:
+    if not ACTIVITY[i][11]:
+        status = "DORMANT"
+    elif last_bal < 120_000 and random.random() < 0.55:
         status = "DORMANT"
     if c["kyc_status"] == "REJECTED":
         status = "CLOSED"
@@ -387,11 +444,19 @@ for i, c in enumerate(customers):
     jd = c["join_date"]
     join_m = jd.month if jd.year == 2025 else 0
     prev = int(bal[i][0] / (a["growth"] ** 1)) if join_m == 0 else 0
+    if join_m == 0 and not ACTIVITY[i][0]:
+        prev = int(bal[i][0])      # dorman sejak awal: saldo beku, tanpa transaksi
 
     for mi in range(1, 13):
         d_end = MONTH_ENDS[mi - 1]
         if join_m and mi < join_m:
             bal_rows.append([acc["account_id"], d_end.isoformat(), 0, 0, 0, 0, 0, 0])
+            continue
+
+        if not ACTIVITY[i][mi - 1]:
+            # dorman: tidak ada transaksi, saldo beku
+            bal_rows.append([acc["account_id"], d_end.isoformat(), int(prev), int(prev),
+                             int(prev), 0, 0, 0])
             continue
 
         opening = prev
