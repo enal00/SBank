@@ -9,6 +9,7 @@ import csv
 import json
 import os
 from collections import defaultdict
+from datetime import date
 
 import duckdb
 
@@ -180,32 +181,55 @@ tulis("dormant_money.csv",
        "pct_saldo_dorman"], dorm)
 
 # ============================================================
-# 5. JURANG PROMO — indeks saldo per bulan-ke, promo vs non-promo
+# 5. REALISASI TARIF PROMO — katalog menulis apa vs rekening menerima apa
+#    Ini BUKAN uji efek kampanye. Ini uji apakah kampanye pernah sampai
+#    ke rekening: kalau tarif promo tidak pernah dibayar, tidak ada perilaku
+#    nasabah yang bisa meresponsnya, dan H2 tidak terdefinisi.
 # ============================================================
-promo = defaultdict(lambda: [0, 0.0, 0.0])
-for k in sorted(kohort_cust):
-    if not k.startswith("2025"):
-        continue
-    ids = kohort_cust[k]
-    for ch in {info[c]["channel"] for c in ids}:
-        grp = "PROMO" if ch == "PROMO_CAMPAIGN" else "NON_PROMO"
-        sub = [c for c in ids if info[c]["channel"] == ch]
-        s0 = sum(saldo[k].get(c, 0.0) for c in sub)
-        if s0 <= 0:
-            continue
-        for bln in BULAN:
-            ki = k_index(k, bln)
-            if ki < 0:
-                continue
-            s = sum(saldo[bln].get(c, 0.0) for c in sub)
-            promo[(grp, ki)][0] += len(sub)
-            promo[(grp, ki)][1] += s
-            promo[(grp, ki)][2] += s0
+katalog = []
+for kode, mulai, akhir, tarif, is_promo in con.execute(f"""
+        SELECT product_code, CAST(effective_date AS DATE), CAST(end_date AS DATE),
+               rate_pa, is_promo
+        FROM read_csv_auto('{DATA}/product_rates.csv', header=true)
+        WHERE product_code = 'SB_SAVINGS'
+        ORDER BY effective_date""").fetchall():
+    katalog.append((mulai, akhir, float(tarif), bool(is_promo)))
 
-cliff = []
-for (grp, ki), (n, s, s0) in sorted(promo.items()):
-    cliff.append([grp, ki, n, round(s / n / 1e6, 3), round(s / s0 * 100, 2)])
-tulis("promo_cliff.csv", ["grup", "bulan_ke", "n", "saldo_rata2_juta", "indeks_saldo_pct"], cliff)
+
+def tarif_berlaku(bln):
+    """Tarif katalog yang berlaku pada pertengahan bulan (aman dari batas bulan)."""
+    tgl = date(int(bln[:4]), int(bln[5:7]), 15)
+    hasil = (None, None)
+    for mulai, akhir, tarif, is_promo in katalog:
+        if mulai <= tgl and (akhir is None or tgl <= akhir):
+            hasil = (tarif, is_promo)
+    return hasil
+
+
+bunga_bln = dict(con.execute("""
+        SELECT strftime(CAST(t.txn_date AS DATE), '%Y-%m'), sum(t.amount)
+        FROM txn t JOIN acc a USING (account_id)
+        WHERE t.txn_type = 'INTEREST_CREDIT' AND a.account_type = 'SAVINGS'
+        GROUP BY 1""").fetchall())
+saldo_bln = dict(con.execute("""
+        SELECT strftime(CAST(b.month_end_date AS DATE), '%Y-%m'), sum(b.avg_balance)
+        FROM bal b JOIN acc a USING (account_id)
+        WHERE a.account_type = 'SAVINGS'
+        GROUP BY 1""").fetchall())
+
+rel = []
+for bln in BULAN:
+    tarif, is_promo = tarif_berlaku(bln)
+    bunga = float(bunga_bln.get(bln) or 0)
+    dasar = float(saldo_bln.get(bln) or 0)
+    real = (bunga / dasar * 12 * 100) if dasar else 0.0
+    tarif_teks = round(tarif, 2) if tarif is not None else ""
+    gap_teks = round(real - tarif, 3) if tarif is not None else ""
+    rel.append([bln, "YA" if is_promo else "TIDAK", tarif_teks, int(round(bunga)),
+                round(dasar / 1e9, 3), round(real, 3), gap_teks])
+tulis("promo_rate_realized.csv",
+      ["bulan", "dalam_promo", "tarif_katalog_pa_pct", "bunga_dibayar_idr",
+       "saldo_rata2_miliar", "tarif_terealisasi_pa_pct", "selisih_pp"], rel)
 
 # ============================================================
 # 6. CASA MENURUT VINTAGE (tahun bergabung)

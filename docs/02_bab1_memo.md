@@ -128,28 +128,58 @@ Pada bulan ke-5, dipecah per kanal akuisisi:
 
 ---
 
-## 7. Temuan 6 — Promo bunga 4%: **tidak dapat dijawab**
+## 7. Temuan 6 — Promo bunga 4%: **tidak dapat dijawab**, dan ini alasannya
 
-Katalog promo mencatat kenaikan bunga tabungan 3,50% → 4,00% untuk 1 Juli–30 September 2025, lalu kembali 3,50% pada 1 Oktober. Saya menguji apakah ada lonjakan dana selama jendela promo dan pendarahan setelahnya ("uang sewaan"):
+Katalog promo mencatat kenaikan bunga tabungan 3,50% → 4,00% untuk 1 Juli–30 September 2025, lalu kembali 3,50% pada 1 Oktober.
 
-| Bulan | Indeks saldo (Jan=100) | Dalam promo |
-|---|---:|---|
-| Jun | 118,25 | Tidak |
-| Jul | 121,38 | **Ya** |
-| Agu | 125,20 | **Ya** |
-| Sep | 128,44 | **Ya** |
-| Okt | 130,31 | Tidak |
-| Des | 140,29 | Tidak |
+Uji naifnya sudah saya jalankan (`gen/run_promo_probe.py`): dana akhir September **Rp26.483 miliar**, 90 hari setelah tarif kembali normal **Rp26.868 miliar** — "retensi pasca-promo" **101,45%**, nol pendarahan, bahkan tumbuh.
 
-Pertumbuhannya **naik rata ~3,3% per bulan sepanjang tahun**, tanpa lonjakan di jendela promo dan tanpa patahan di Oktober.
+Angka itu nyata dan bisa diulang, tetapi **tidak membuktikan apa pun**. Tiga pemeriksaan menunjukkan mengapa.
 
-Agar uji ini bukan sekadar rencana, logika Q1–Q3 di `sql/20_promo_effect.sql` sudah saya jalankan pada data sintetis (`gen/run_promo_probe.py`). Hasilnya: dana akhir September **Rp26.483 miliar**, dan 90 hari setelah tarif kembali normal **Rp26.868 miliar** — retensi pasca-promo **101,45%**, nol pendarahan. Angka ini **mendemonstrasikan bahwa ujinya dapat dieksekusi**, bukan bahwa kampanye berhasil.
+### Bukti 1 — tarif promo tidak pernah sampai ke rekening
 
-Tetapi **saya menolak menyimpulkan bahwa promo tidak bekerja**, karena dataset ini tidak memodelkan sensitivitas saldo terhadap suku bunga — tidak ada mekanisme yang bisa menghasilkan efek tersebut. Hasil nol di sini adalah **konsekuensi desain, bukan temuan.**
+Kalau kampanye benar-benar berjalan, bunga yang dibayar harus naik ~14% pada Jul–Sep (4,00 / 3,50). Yang terjadi:
 
-> Untuk menjawabnya dengan benar saya butuh dua hal yang tidak ada di dataset: (1) *event table* perubahan suku bunga dan (2) penanda eksposur kampanye per nasabah. SQL-nya sudah saya siapkan di `sql/20_promo_effect.sql`, siap dijalankan pada data nyata.
+| Bulan | Tarif katalog | Tarif terealisasi | Selisih |
+|---|---:|---:|---:|
+| Jun | 3,50% | 2,48% | −1,02 pp |
+| **Jul** | **4,00%** | **2,50%** | **−1,50 pp** |
+| **Agu** | **4,00%** | **2,47%** | **−1,53 pp** |
+| **Sep** | **4,00%** | **2,48%** | **−1,52 pp** |
+| Okt | 3,50% | 2,42% | −1,08 pp |
 
-**Mengetahui kapan data tidak bisa menjawab pertanyaan adalah bagian dari pekerjaan ini.** Lebih berbahaya menghasilkan angka yang terlihat meyakinkan daripada mengakui batasnya.
+Tarif terealisasi **datar 2,42–2,54% sepanjang 12 bulan**. Di luar jendela promo, rasio terealisasi-terhadap-katalog sangat stabil: **0,69–0,73** di setiap bulan (selisih ~1,0 pp, wajar karena pajak bunga dan saldo yang tidak penuh berbunga). Rasio itu **putus di bulan promo**: turun ke **0,62** karena tarif katalog naik sementara bunga yang benar-benar dibayar tidak bergerak. Selisih katalog-vs-realisasi melebar ≈0,5 pp selama tiga bulan — persis sebesar kenaikan yang tidak pernah dibayarkan.
+
+**Nasabah tidak pernah menerima promo, sehingga tidak mungkin bereaksi terhadap promo.**
+
+### Bukti 2 — tidak ada penanda siapa yang ikut kampanye
+
+`customers.csv` punya 14 kolom — `customer_id`, `join_date`, `acquisition_channel`, `city`, `province`, `age`, `gender`, `occupation`, `monthly_income_band`, `is_first_time_bank_user`, `kyc_status`, dan seterusnya — **tidak satu pun menandai eksposur kampanye**. `promo_campaigns.csv` hanya level kampanye (4 baris: kode, tanggal, anggaran), bukan level nasabah. Tanpa grup pembanding tidak ada *treatment* dan *control*; yang ada hanya dua deret waktu.
+
+### Bukti 3 — tidak ada patahan di Oktober
+
+| Periode | Pertumbuhan (saldo akhir bulan) | Pertumbuhan (saldo rata-rata) |
+|---|---:|---:|
+| Jun → Sep (selama promo) | +8,6% | +9,1% |
+| Sep → Des (setelah promo berakhir) | +9,2% | +8,1% |
+
+Pertumbuhannya praktis sama sebelum dan sesudah jendela promo — dan **arah selisihnya berbalik** tergantung ukuran yang dipakai (akhir bulan vs rata-rata). Perbedaan sekecil itu, dengan tanda yang bisa dibalik oleh pilihan kolom, adalah tanda **tidak ada sinyal** — bukan efek yang kecil. Yang pasti: Sep→Des **tidak negatif**. Kalau dana itu "uang sewaan", ia seharusnya rontok begitu tarif kembali ke 3,50%. Saldo hanya mengikuti tren waktu — tidak ada tarif di dalam persamaannya.
+
+### Yang hilang, dan apa artinya
+
+Tiga hal tidak ada di dataset ini, dan tanpa ketiganya H2 tidak terdefinisi:
+
+| # | Kebutuhan | Status |
+|---|---|---|
+| 1 | Tarif promo diterapkan ke `INTEREST_CREDIT` | ❌ terealisasi datar, katalog 4,00% tidak dibayar |
+| 2 | Tabel eksposur level nasabah `(customer_id, campaign_id, exposure_date, eligible_flag)` | ❌ tidak ada |
+| 3 | Elastisitas saldo terhadap tarif | ❌ saldo hanya fungsi waktu |
+
+Dengan ketiganya, ujinya menjadi tiga hal yang bisa dipertanggungjawabkan: **DiD** (Δsaldo promo − Δsaldo non-promo, sebelum vs sesudah Juli), **uji cliff** (penurunan khusus grup promo pada Oktober), dan **elastisitas** (rupiah dana masuk per 1 bps kenaikan tarif).
+
+> Hasil nol di sini adalah **konsekuensi desain, bukan temuan.** Menyimpulkan "promo tidak bekerja" dari data ini sama salahnya dengan menyimpulkan "promo bekerja" dari angka 101,45%. SQL untuk data nyata sudah siap di `sql/20_promo_effect.sql`.
+
+**Catatan perbaikan:** tabel `promo_cliff.csv` yang sempat ada di `analysis/` sudah **dihapus**. Tabel itu menamai grup "PROMO" padahal yang dipakai adalah *kanal akuisisi* `PROMO_CAMPAIGN`, bukan eksposur tarif; dan `n`-nya menurun bukan murni karena churn melainkan karena kohort muda belum punya tenor panjang. Karena tidak layak disebut kurva retensi, ia tidak dipertahankan.
 
 ---
 
@@ -180,13 +210,14 @@ Diurutkan menurut rasio dampak terhadap usaha. Nominal adalah **ilustrasi setara
 ## Lampiran — cara menjalankan ulang
 
 ```bash
-uv run --with duckdb      python gen/bab1_analysis.py   # 9 tabel di analysis/
+uv run --with duckdb      python gen/bab1_analysis.py   # 10 tabel di analysis/
 uv run --with matplotlib  python gen/bab1_charts.py     # 3 grafik di analysis/
 ```
 
 | Berkas | Isi |
 |---|---|
 | `analysis/pooled_curve.csv` | kurva retensi orang & uang per bulan-ke |
+| `analysis/retention_matrix.csv` | matriks retensi per kohort × tenor |
 | `analysis/leak_staging.csv` | pemecahan kebocoran awal vs lanjut |
 | `analysis/retention_decomposition.csv` | dekomposisi eksak orang vs saldo |
 | `analysis/retention_by_channel.csv` | retensi per kanal, 12 titik |
@@ -194,6 +225,7 @@ uv run --with matplotlib  python gen/bab1_charts.py     # 3 grafik di analysis/
 | `analysis/casa_by_vintage.csv` | DPK menurut tahun bergabung |
 | `analysis/balance_concentration.csv` | pangsa saldo per desil teratas (uji hipotesis konsentrasi) |
 | `analysis/promo_window.csv` | seri bulanan di sekitar jendela promo |
+| `analysis/promo_rate_realized.csv` | tarif katalog vs tarif yang benar-benar dibayar, per bulan (Bukti 1 di §7) |
 | `analysis/g1_kurva_retensi.png` | kurva kembar retensi orang vs uang |
 | `analysis/g2_kanal.png` | retensi uang per kanal |
 | `analysis/g3_orang_vs_uang.png` | selisih orang vs uang per kanal (bulan ke-5) |

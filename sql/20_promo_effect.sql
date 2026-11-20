@@ -2,11 +2,18 @@
 --  20_promo_effect.sql — Uji efek kampanye bunga terhadap dana
 -- =====================================================================
 --  STATUS: TEMPLATE. Tidak dapat dijalankan pada `seabank_twin` karena
---  dua kolom kunci tidak ada di dataset sintetis, dan saya menolak
+--  prasyarat kuncinya tidak ada di dataset sintetis, dan saya menolak
 --  memalsukan hasilnya. Berkas ini adalah spesifikasi uji yang siap
 --  dipakai begitu data nyata tersedia.
 --
 --  YANG KURANG DARI DATASET SAAT INI
+--  0. TARIF YANG BENAR-BENAR DIBAYAR. Prasyarat paling dasar: kalau tarif
+--     promo tidak pernah diterapkan ke transaksi bunga, tidak ada perilaku
+--     yang bisa meresponsnya dan uji efek tidak terdefinisi. Pada
+--     `seabank_twin` tarif terealisasi datar 2,4–2,5% p.a. sepanjang 2025,
+--     termasuk Jul–Sep ketika katalog menulis 4,00%. Uji prasyaratnya ada
+--     di Q0 (dieksekusi: `gen/bab1_analysis.py` §5 ->
+--     `analysis/promo_rate_realized.csv`).
 --  1. `campaign_exposure` — tabel penanda nasabah mana yang terekspos
 --     kampanye apa, sejak kapan. Tanpa ini, tidak ada kelompok pembanding:
 --     semua nasabah "terekspos" kampanye bunga 4% karena kampanye itu
@@ -14,6 +21,9 @@
 --  2. Variasi tarif yang cukup. Bunga tabungan hanya berubah sekali
 --     (3,50% -> 4,00% -> 3,50%). Dengan satu kejadian, efek kampanye
 --     tidak dapat dipisahkan dari tren musiman dan pertumbuhan basis.
+--  3. Elastisitas saldo terhadap tarif. Tanpa mekanisme ini di generator,
+--     saldo hanya fungsi waktu — hasil "tidak ada efek" adalah konsekuensi
+--     desain, bukan temuan.
 --
 --  DESAIN UJI YANG DIBUTUHKAN (bukan sekadar "bulan promo naik atau tidak")
 --  - Kelompok perlakuan : nasabah dengan saldo > 0 sebelum 1 Jul 2025.
@@ -31,6 +41,44 @@
 --  menjadi date_trunc('month', x) dan SAFE_DIVIDE menjadi pembagian biasa.
 -- =====================================================================
 
+
+-- ;; ------------------------------------------------------------------
+-- Q0. PRASYARAT — apakah tarif katalog benar-benar dibayar?
+--     Jalankan SEBELUM uji efek. Kalau tarif terealisasi tidak bergerak
+--     ketika tarif katalog naik, kampanye tidak pernah sampai ke rekening:
+--     uji efek menjadi tidak terdefinisi (bukan "hasilnya nol").
+--     Patokan: tarif terealisasi < tarif katalog karena pajak bunga dan
+--     saldo yang tidak penuh berbunga, TETAPI rasio keduanya harus stabil.
+-- ---------------------------------------------------------------------
+WITH tarif AS (
+  SELECT effective_date, end_date, rate_pa
+  FROM `seabank_twin.product_rates`
+  WHERE product_code = 'SB_SAVINGS'
+),
+bayar AS (
+  SELECT DATE_TRUNC(txn_date, MONTH) AS bulan, SUM(amount) AS bunga_dibayar
+  FROM `seabank_twin.transactions`
+  WHERE txn_type = 'INTEREST_CREDIT'
+  GROUP BY 1
+),
+dasar AS (
+  SELECT DATE_TRUNC(b.month_end_date, MONTH) AS bulan, SUM(b.avg_balance) AS saldo
+  FROM `seabank_twin.account_monthly_balances` b
+  JOIN `seabank_twin.accounts` a USING (account_id)
+  WHERE a.account_type = 'SAVINGS'
+  GROUP BY 1
+)
+SELECT
+  d.bulan,
+  ROUND(SAFE_DIVIDE(b.bunga_dibayar, d.saldo) * 12 * 100, 3) AS tarif_terealisasi_pa_pct,
+  t.rate_pa                                                  AS tarif_katalog_pa_pct,
+  ROUND(t.rate_pa - SAFE_DIVIDE(b.bunga_dibayar, d.saldo) * 12 * 100, 3) AS selisih_pp
+FROM dasar d
+LEFT JOIN bayar b USING (bulan)
+JOIN tarif t
+  ON  d.bulan >= DATE_TRUNC(t.effective_date, MONTH)
+ AND (t.end_date IS NULL OR d.bulan <= DATE_TRUNC(t.end_date, MONTH))
+ORDER BY d.bulan;
 
 -- ;; ------------------------------------------------------------------
 -- Q1. Jendela kampanye, diambil dari tabel tarif (bukan ditulis manual,

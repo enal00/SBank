@@ -66,10 +66,10 @@ Detail lengkap, tabel angka, dan rekomendasi anggaran: **[`docs/02_bab1_memo.md`
 |---|---|---|---|
 | H1a | CASA rapuh karena **terkonsentrasi** di segelintir nasabah | **DITOLAK** | top 5% = 32,97% saldo; top 20% = 63,36% |
 | H1b | CASA rapuh karena **tidak lengket** | **TERBUKTI** | retensi uang 12 bulan = 59,53% |
-| H2 | Sebagian DPK buru bunga — naik saat promo, pergi setelahnya | **TIDAK DAPAT DIUJI** | dataset tidak memodelkan sensitivitas bunga; hasil nol adalah konsekuensi desain, bukan temuan ([`sql/20_promo_effect.sql`](sql/20_promo_effect.sql)) |
+| H2 | Sebagian DPK buru bunga — naik saat promo, pergi setelahnya | **TIDAK DAPAT DIUJI** | tarif promo 4,00% tidak pernah dibayar (terealisasi datar 2,48%), tidak ada penanda eksposur per nasabah, tidak ada patahan di Oktober — lihat [memo §7](docs/02_bab1_memo.md#7-temuan-6--promo-bunga-4-tidak-dapat-dijawab-dan-ini-alasannya) dan [`analysis/promo_rate_realized.csv`](analysis/promo_rate_realized.csv) |
 | H3 | Pertumbuhan kredit digerakkan mitra berisiko tinggi | **BELUM** | dijadwalkan Bab 3 |
 
-Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban: H2 tidak bisa diuji tanpa *event table* suku bunga dan penanda eksposur kampanye per nasabah. Spesifikasi ujinya sudah ditulis dan logikanya sudah dijalankan — hasilnya tersedia, interpretasinya yang tidak.
+Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 gagal di tiga titik sekaligus: **tarif promo 4,00% tidak pernah diterapkan ke bunga yang benar-benar dibayar** (terealisasi tetap 2,47–2,50% selama Jul–Sep), **tidak ada penanda siapa yang terpapar kampanye**, dan **saldo tidak punya mekanisme untuk merespons tarif**. Ujinya tetap bisa dijalankan — dan sudah dijalankan. Hasil 101,45% itu hanya mengukur "tidak ada yang terjadi", bukan "promo berhasil".
 
 ---
 
@@ -145,6 +145,7 @@ Seed tetap → hasil deterministik dan dapat diaudit ulang.
 3. **Horizon 12 bulan.** Retensi tahun ke-2 dan nilai seumur nasabah belum terukur.
 4. **Uji kualitas data T01, T02, T06 sengaja gagal** — duplikat, transaksi yatim, nasabah KYC-ditolak yang tetap punya akun aktif. Analisis berjalan di atas data yang tidak bersih, seperti di bank sungguhan. T05 menemukan **15% nasabah** berbeda status antara master dan ledger.
 5. **Tidak ada klaim kausal.** Semua pernyataan adalah asosiasi dan dekomposisi aritmetika, kecuali disebut eksplisit.
+6. **Katalog tarif ≠ tarif yang dibayar.** Promo 4,00% (Jul–Sep 2025) tercatat di `product_rates.csv` tetapi tidak pernah diterapkan ke transaksi bunga; tarif terealisasi datar 2,4–2,5% sepanjang tahun. Konsekuensinya H2 tidak dapat diuji pada dataset versi ini — buktinya di [`analysis/promo_rate_realized.csv`](analysis/promo_rate_realized.csv) dan memo §7.
 
 ---
 
