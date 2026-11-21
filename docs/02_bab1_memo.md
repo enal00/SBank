@@ -183,7 +183,45 @@ Dengan ketiganya, ujinya menjadi tiga hal yang bisa dipertanggungjawabkan: **DiD
 
 ---
 
-## 8. Rekomendasi
+## 8. Konteks yang sering salah dibaca: BOPO 91,47%
+
+Bagian ini tidak ditemukan dari data. Ia ada di sini karena angka BOPO 91,47% termasuk yang paling sering **salah arah** dibaca — termasuk oleh saya sendiri di draf pertama README ini.
+
+**Arah rasionya.** BOPO = beban operasional ÷ pendapatan operasional. **Semakin kecil, semakin baik.** Nol persen adalah kesempurnaan teoretis (biaya nol — mustahil dan tidak diinginkan: bank tanpa biaya berarti tanpa orang dan tanpa sistem). Seratus persen adalah **titik nol laba operasional**: setiap rupiah pendapatan habis jadi biaya. Di atas 100% berarti rugi operasional.
+
+**Posisi 91,47%.** Dua rezim ambang yang biasa dipakai:
+
+| Rujukan | Ambang | Posisi 91,47% |
+|---|---|---|
+| SK Dir BI 30/21/KEP/DIR & SE BI 6/23/DPNP | < 93,52% = "Sehat" | lolos, tipis **2,05 pp** |
+| SE BI 13/24/DPNP (2011) | 83–88% sangat sehat · **89–93% sehat** · 94–96% cukup sehat · 97–100% kurang · >100% tidak sehat | **peringkat 2 dari 5** |
+
+Jadi "lolos ambang regulator" dan "efisien" adalah dua hal berbeda: ambang itu disusun agar bank tidak dinilai tidak sehat, bukan agar bank kompetitif. Untuk bank umum paling efisien di Indonesia, kisaran 60–70% adalah hal biasa — angka per bank perlu dicek ke laporan tahunannya sebelum dikutip.
+
+**Kenapa ini pengungkit terbesar, bukan pintu tertutup.** Dengan BOPO 91,47%, margin laba operasional hanya **8,53%** dari pendapatan operasional. Karena itu, tanpa asumsi apa pun:
+
+| Skenario | BOPO | Margin laba operasional | Perubahan laba operasional |
+|---|---:|---:|---:|
+| Sekarang | 91,47% | 8,53% | — |
+| Naik ke batas "sehat" versi lama | 93,52% | 6,48% | −24% |
+| Masuk peringkat 1 | 88,00% | 12,00% | **+41%** |
+| Ujung peringkat 1 | 83,00% | 17,00% | **+99%** |
+| Beban dipotong 10% | 82,32% | 17,68% | **+107%** |
+
+Setiap 1 pp BOPO = 1 pp pendapatan operasional = **+11,7% laba operasional**. Diterjemahkan ke aset: dengan pendapatan operasional ≈ 22% aset (NIM 21,45% + fee), 1 pp BOPO ≈ **0,22 pp ROA** — untuk bank ber-ROA ~1,5%, itu +15% laba per satu poin rasio.
+
+**Tiga jebakan sebelum angka ini dikutip.**
+1. **CKPN masuk atau tidak.** Praktisi sering menghitung BOPO tanpa provisi agar sebanding antar tahun; laporan publik kadang memasukkannya. Selisihnya bisa beberapa pp — sebutkan definisi yang dipakai.
+2. **Penyebutnya bergerak sendiri.** Saat NIM turun (siklus bunga turun), BOPO naik **walau biaya tidak berubah sama sekali**. BOPO naik belum tentu manajemen makin boros.
+3. **Efisiensi vs pertumbuhan adalah trade-off.** DPK tumbuh +30,6%, dan sebagian pertumbuhan itu dibeli lewat biaya (promo, komisi mitra, akuisisi). Menekan BOPO dengan mematikan mesin akuisisi memperbaiki rasio tahun ini dan mematikan pertumbuhan tahun depan.
+
+**Konsekuensi untuk kerangka Bab 1.** Alasan memilih komposisi neraca sebagai pertanyaan bisnis **bukan** karena biaya sudah mentok — biaya justru pengungkit terbesar. Alasannya adalah **lingkup data**: dataset ini tidak memuat rincian beban, sehingga pertanyaan yang bisa diuji di sini adalah *dana mana yang murah dan lengket*, bukan *di mana biaya bisa dipotong*. Klaim yang benar tentang batas kemampuan analisis jauh lebih kuat daripada klaim yang salah tentang kondisi bank.
+
+> Ambang di atas berasal dari edaran BI era CAMEL/peringkat. Sejak RGEC (SEOJK 14/SEOJK.03/2017), BOPO menjadi salah satu indikator rentabilitas tanpa pita angka tetap. Kalau angka ini mau dikutip formal, sebutkan rujukan dan tahunnya.
+
+---
+
+## 9. Rekomendasi
 
 Diurutkan menurut rasio dampak terhadap usaha. Nominal adalah **ilustrasi setara** (×1.000), bukan proyeksi.
 
@@ -197,7 +235,7 @@ Diurutkan menurut rasio dampak terhadap usaha. Nominal adalah **ilustrasi setara
 
 ---
 
-## 9. Batasan yang harus dibaca sebelum mengutip angka ini
+## 10. Batasan yang harus dibaca sebelum mengutip angka ini
 
 1. **Data sintetis.** Perilaku churn, reaktivasi, dan residual dana adalah parameter yang saya pilih sendiri (`ARCH` di `gen/generate.py`), bukan hasil estimasi dari data primer. Temuan menunjukkan **bahwa metode ini mampu mendeteksi pola tersebut** — bukan bahwa SeaBank mengalaminya.
 2. **Satu sampel bibit.** Angka bulan ke-11 hanya berasal dari satu angkatan (n=600); titik lain gabungan beberapa angkatan. Perbedaan di bawah 3 pp tidak dapat ditafsirkan.

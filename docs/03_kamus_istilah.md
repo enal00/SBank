@@ -1,13 +1,13 @@
-# Kamus Istilah Perbankan (Bahasa Awam)
+# Kamus Istilah Perbankan
 
-Term di bawah ini muncul di seluruh portofolio ini. Dibuat sederhana (bukan definisi resmi bank sentral) agar mudah dipahami saat wawancara atau diskusi bisnis.
+Term di bawah ini muncul di seluruh portofolio ini. Dibuat sederhana (bukan definisi resmi bank sentral) agar mudah dipahami saat diskusi bisnis.
 
 | Istilah | Kepanjangan / Istilah Resmi | Pengertian Sederhana | Mengapa Penting di Portofolio Ini |
 |---|---|---|---|
 | **CASA** | *Current Account & Savings Account* | Dana murah (rekening giro & tabungan). Bunga rendah, tetapi dananya **paling "lengket"** dan mudah dipakai bertransaksi harian. | **Bab 1:** Retensi CASA ternyata rapuh (59,53% di akhir tahun). Ini basis alokasi DPK berikutnya. |
 | **LDR** | *Loan to Deposit Ratio* | Persentase DPK yang diputar menjadi kredit. Formula: $\text{Kredit} / \text{DPK}$. | **2025:** LDR SeaBank **92,32%** — artinya dana nyaris seluruhnya sudah diputar sebagai kredit. |
 | **NIM** | *Net Interest Margin* | Pendapatan bunga bersih dibagi rata-rata aktiva produktif. Sederhananya: "margin keuntungan bunga bank". | **21,45%** (sangat tinggi untuk ukuran bank). Margin ini harus dijaga tanpa menaikkan NPL. |
-| **BOPO** | *Biaya Operasional vs Pendapatan Operasional* | Rasio efisiensi biaya. Formula: $\text{BOP} / \text{POP}$. Semakin tinggi %, semakin boros. | **91,47%** (efisiensi sudah di ujung). Profitabilitas tidak bisa ditingkatkan lewat potong biaya lagi. |
+| **BOPO** | *Biaya Operasional vs Pendapatan Operasional* | Rasio efisiensi biaya. Formula: biaya operasional dibagi pendapatan operasional. **Semakin kecil %, semakin efisien.** 100% = laba operasional nol; di atas 100% = rugi operasional. | **91,47%** (publik 2025). Peringkat 2 dari 5 — bukan "sudah sangat efisien". Margin laba operasional tinggal 8,53%, jadi tiap 1 pp BOPO yang dipotong menaikkan laba operasional ~11,7%. Ruang perbaikannya masih besar. |
 | **NPL** | *Non-Performing Loan* | Persentase kredit macet (tunggakan >90 hari). | **1,82%** (publik 2025). Portofolio menjaga kredit baru agar NPL tidak melonjak di atas batas toleransi. |
 | **DPK** | *Dana Pihak Ketiga* | Total simpanan masyarakat (Tabungan + Deposito + Giro). | Rp34,8 triliun (publik 2025); pada dataset sintetis skala 1:1.000 menjadi **Rp34,8 miliar**. |
 | **Retensi** | *Retention Rate* | Daya tahan orang/uang di bank dari waktu ke waktu. | **Temuan Kunci Bab 1:** Retensi orang (**68,33%**) ≠ retensi uang (**59,53%**). Bocornya di uang, bukan di nasabah. |

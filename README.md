@@ -21,9 +21,9 @@ Bank digital Indonesia tumbuh cepat, tetapi pertumbuhan DPK bukan otomatis profi
 | Kredit | +18,2% | kredit tumbuh lebih lambat dari dana |
 | LDR | 92,32% | dana nyaris seluruhnya sudah diputar |
 | NIM | 21,45% | spread sangat lebar untuk ukuran bank |
-| **BOPO** | **91,47%** | efisiensi biaya sudah di ujung |
+| **BOPO** | **91,47%** | peringkat 2 dari 5 — masih 3,5–8,5 pp dari "sangat sehat" |
 
-BOPO 91,47% menutup satu pintu: **perbaikan profitabilitas berikutnya tidak datang dari memotong biaya.** Ia harus datang dari **kualitas komposisi neraca** — dana mana yang murah *dan* lengket, kredit mana yang menghasilkan tanpa menaikkan risiko.
+BOPO 91,47% **bukan** tanda efisiensi sudah mentok. Margin laba operasionalnya hanya 8,53% dari pendapatan operasional, sehingga **setiap 1 pp penurunan BOPO = +11,7% laba operasional**; memotong biaya 10% melipatgandakannya (+107%). Ini pengungkit terbesar yang tersedia — tetapi rincian beban tidak ada di dataset ini, jadi pertanyaan yang bisa saya jawab dengan data adalah **komposisi neraca**, bukan pemangkasan biaya. Argumennya soal lingkup data, bukan klaim bahwa biaya sudah mentok. Perhitungan lengkap: [memo §8](docs/02_bab1_memo.md#8-konteks-yang-sering-salah-dibaca-bopo-9147).
 
 > **Pertanyaan Bisnis:**
 > Di mana menaruh rupiah berikutnya — menambah DPK murah, atau menambah kredit berimbal hasil tinggi — agar NIM terjaga tanpa menaikkan NPL di atas toleransi?
