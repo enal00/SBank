@@ -66,7 +66,7 @@ Detail lengkap, tabel angka, dan rekomendasi anggaran: **[`docs/02_bab1_memo.md`
 |---|---|---|---|
 | H1a | CASA rapuh karena **terkonsentrasi** di segelintir nasabah | **DITOLAK** | top 5% = 32,97% saldo; top 20% = 63,36% |
 | H1b | CASA rapuh karena **tidak lengket** | **TERBUKTI** | retensi uang 12 bulan = 59,53% |
-| H2 | Sebagian DPK buru bunga — naik saat promo, pergi setelahnya | **TIDAK DAPAT DIUJI** | tarif promo 4,00% tidak pernah dibayar (terealisasi datar 2,48%), tidak ada penanda eksposur per nasabah, tidak ada patahan di Oktober — lihat [memo §7](docs/02_bab1_memo.md#7-temuan-6--promo-bunga-4-tidak-dapat-dijawab-dan-ini-alasannya) dan [`analysis/promo_rate_realized.csv`](analysis/promo_rate_realized.csv) |
+| H2 | Sebagian DPK buru bunga — naik saat promo, pergi setelahnya | **TIDAK DAPAT DIUJI** | tarif promo 4,00% tidak pernah dibayar (terealisasi datar 2,48%), tidak ada penanda eksposur per nasabah, tidak ada patahan di Oktober — lihat [memo §7](docs/02_bab1_memo.md#7-temuan-6--promo-bunga-4-tidak-dapat-dijawab-dan-ini-alasannya) dan [`analysis/promo_rate_realized.csv`](analysis/promo_rate_realized.csv). **Alat ujinya sudah lulus kalibrasi** di [lab H2](docs/04_lab_h2.md): bias +0,41 pp, slope 1,02, placebo ≈ 0 |
 | H3 | Pertumbuhan kredit digerakkan mitra berisiko tinggi | **BELUM** | dijadwalkan Bab 3 |
 
 Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 gagal di tiga titik sekaligus: **tarif promo 4,00% tidak pernah diterapkan ke bunga yang benar-benar dibayar** (terealisasi tetap 2,47–2,50% selama Jul–Sep), **tidak ada penanda siapa yang terpapar kampanye**, dan **saldo tidak punya mekanisme untuk merespons tarif**. Ujinya tetap bisa dijalankan — dan sudah dijalankan. Hasil 101,45% itu hanya mengukur "tidak ada yang terjadi", bukan "promo berhasil".
@@ -79,6 +79,7 @@ Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 g
 |---|---|---|---|
 | **0** | Fondasi & kepercayaan data | skema BigQuery, generator terkalibrasi, verifikasi independen, 10 uji kualitas data | **selesai** |
 | **1** | Kualitas CASA — retensi orang vs uang | memo 2 halaman, 10 tabel, 3 grafik, 2 berkas SQL | **selesai** |
+| **1b** | Laboratorium H2 — kalibrasi alat uji promo | simulator 2 dunia, 200 estimasi pemulihan, MDE, uji placebo | **selesai** |
 | 2 | Segmentasi & nilai nasabah | RFM perilaku, nilai seumur, segmentasi yang bisa dieksekusi | berikutnya |
 | 3 | Kredit & risiko mitra | NPL per mitra, konsentrasi risiko, kualitas agunan | — |
 | 4 | Sintesis | jawaban atas pertanyaan portofolio: alokasi rupiah berikutnya | — |
@@ -96,7 +97,8 @@ portfolio/
 │   ├── explore_bab1.py      # eksplorasi kohort (skrip yang membongkar cacat desain)
 │   ├── bab1_analysis.py     # analisis Bab 1 — menulis 10 tabel ke analysis/
 │   ├── bab1_charts.py       # 3 grafik Bab 1
-│   └── run_promo_probe.py   # menjalankan Q1–Q3 template uji promo
+│   ├── run_promo_probe.py   # menjalankan Q1–Q3 template uji promo
+│   └── h2_lab.py            # laboratorium H2 — 3 prasyarat, 2 dunia, 200 estimasi
 ├── sql/
 │   ├── 00_schema_bigquery.sql   # DDL + view metrik resmi
 │   ├── 10_dq_tests.sql          # 10 uji kualitas data (T01–T10)
@@ -104,8 +106,11 @@ portfolio/
 ├── docs/
 │   ├── 00_dataset_card.md       # kartu dataset: sumber, kalibrasi, batasan, etika (v1.1)
 │   ├── 01_calibration_report.md # target publik vs hasil dataset, per metrik (v1.1)
-│   └── 02_bab1_memo.md          # memo Bab 1 — temuan & rekomendasi
+│   ├── 02_bab1_memo.md          # memo Bab 1 — temuan & rekomendasi
+│   ├── 03_kamus_istilah.md      # glosarium bahasa awam
+│   └── 04_lab_h2.md             # laporan laboratorium H2 — vonis atas alatnya
 ├── analysis/                    # keluaran Bab 1: 10 CSV + 3 PNG + summary.json
+├── lab/                         # keluaran laboratorium: 6 CSV + run.log
 └── data/                        # TIDAK di-commit: 143 MB, dibangun ulang dari seed
 ```
 
@@ -132,6 +137,9 @@ uv run --with matplotlib python gen/bab1_charts.py
 
 # 4. Uji promo (template)
 uv run --with duckdb python gen/run_promo_probe.py
+
+# 5. Laboratorium H2 — kalibrasi alat uji (≈90 detik)
+uv run --with duckdb --with numpy python gen/h2_lab.py
 ```
 
 Seed tetap → hasil deterministik dan dapat diaudit ulang.
