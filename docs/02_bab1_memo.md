@@ -194,7 +194,7 @@ Bagian ini tidak ditemukan dari data. Ia ada di sini karena angka BOPO 91,47% te
 | Rujukan | Ambang | Posisi 91,47% |
 |---|---|---|
 | SK Dir BI 30/21/KEP/DIR & SE BI 6/23/DPNP | < 93,52% = "Sehat" | lolos, tipis **2,05 pp** |
-| SE BI 13/24/DPNP (2011) | 83–88% sangat sehat · **89–93% sehat** · 94–96% cukup sehat · 97–100% kurang · >100% tidak sehat | **peringkat 2 dari 5** |
+| SE BI 13/24/DPNP (2011), **Lampiran 6** — matriks penetapan peringkat komponen rentabilitas | 83–88% peringkat 1 · **89–93% peringkat 2** · 94–96% peringkat 3 · 97–100% peringkat 4 · >100% peringkat 5 | **peringkat 2 dari 5** |
 
 Jadi "lolos ambang regulator" dan "efisien" adalah dua hal berbeda: ambang itu disusun agar bank tidak dinilai tidak sehat, bukan agar bank kompetitif. Untuk bank umum paling efisien di Indonesia, kisaran 60–70% adalah hal biasa — angka per bank perlu dicek ke laporan tahunannya sebelum dikutip.
 
@@ -217,7 +217,7 @@ Setiap 1 pp BOPO = 1 pp pendapatan operasional = **+11,7% laba operasional**. Di
 
 **Konsekuensi untuk kerangka Bab 1.** Alasan memilih komposisi neraca sebagai pertanyaan bisnis **bukan** karena biaya sudah mentok — biaya justru pengungkit terbesar. Alasannya adalah **lingkup data**: dataset ini tidak memuat rincian beban, sehingga pertanyaan yang bisa diuji di sini adalah *dana mana yang murah dan lengket*, bukan *di mana biaya bisa dipotong*. Klaim yang benar tentang batas kemampuan analisis jauh lebih kuat daripada klaim yang salah tentang kondisi bank.
 
-> Ambang di atas berasal dari edaran BI era CAMEL/peringkat. Sejak RGEC (SEOJK 14/SEOJK.03/2017), BOPO menjadi salah satu indikator rentabilitas tanpa pita angka tetap. Kalau angka ini mau dikutip formal, sebutkan rujukan dan tahunnya.
+> **Dua catatan rujukan.** (a) "Peringkat 2 dari 5" merujuk pada **sel BOPO** dalam matriks komponen rentabilitas — bukan peringkat kesehatan bank secara keseluruhan, yang bersifat komposit (RGEC) dan menggabungkan profil risiko, GCG, rentabilitas, dan permodalan. (b) Pita 83–88 / 89–93 / 94–96 / 97–100 / >100 berasal dari Lampiran 6 SE BI 13/24/DPNP/2011 dan konsisten direproduksi di enam sumber akademik independen (UMM, UNY, UIN Jakarta, UIN Suska, IAIN Ponorogo, dan satu artikel Semantic Scholar); ambang < 93,52% berasal dari SE BI 6/23/DPNP (31 Mei 2004), rujukan yang lebih tua. Sejak RGEC (SEOJK 14/SEOJK.03/2017), BOPO menjadi salah satu indikator rentabilitas **tanpa pita angka tetap** — jadi pita di atas dipakai sebagai *benchmark praktik*, bukan aturan yang berlaku hari ini. Kalau angka ini dikutip formal, sebutkan nomor edaran dan tahunnya.
 
 ---
 

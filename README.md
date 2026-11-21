@@ -25,6 +25,8 @@ Bank digital Indonesia tumbuh cepat, tetapi pertumbuhan DPK bukan otomatis profi
 
 BOPO 91,47% **bukan** tanda efisiensi sudah mentok. Margin laba operasionalnya hanya 8,53% dari pendapatan operasional, sehingga **setiap 1 pp penurunan BOPO = +11,7% laba operasional**; memotong biaya 10% melipatgandakannya (+107%). Ini pengungkit terbesar yang tersedia — tetapi rincian beban tidak ada di dataset ini, jadi pertanyaan yang bisa saya jawab dengan data adalah **komposisi neraca**, bukan pemangkasan biaya. Argumennya soal lingkup data, bukan klaim bahwa biaya sudah mentok. Perhitungan lengkap: [memo §8](docs/02_bab1_memo.md#8-konteks-yang-sering-salah-dibaca-bopo-9147).
 
+> **Sumber ambang.** Pita peringkat: matriks penetapan peringkat komponen rentabilitas (BOPO), **Lampiran 6 SE BI 13/24/DPNP/2011** (83–88% peringkat 1 · 89–93% peringkat 2 · 94–96% peringkat 3 · 97–100% peringkat 4 · >100% peringkat 5). Ambang "sehat" < 93,52% berasal dari **SE BI 6/23/DPNP (31 Mei 2004)** — rujukan yang lebih tua. Dua catatan presisi: (a) "peringkat 2 dari 5" merujuk pada **sel BOPO** dalam matriks itu, **bukan** peringkat kesehatan bank secara keseluruhan (yang bersifat komposit RGEC); (b) sejak **RGEC (SEOJK 14/SEOJK.03/2017)** BOPO tidak lagi berpita angka tetap, sehingga pita di atas dipakai sebagai *benchmark praktik*, bukan aturan berlaku.
+
 > **Pertanyaan Bisnis:**
 > Di mana menaruh rupiah berikutnya — menambah DPK murah, atau menambah kredit berimbal hasil tinggi — agar NIM terjaga tanpa menaikkan NPL di atas toleransi?
 
