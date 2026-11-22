@@ -38,27 +38,29 @@ Pertanyaan itu terlalu besar untuk dijawab sekaligus, jadi dipecah menjadi empat
 
 Angkatan nasabah Januari 2025 (n=600), diukur pada bulan ke-12:
 
+![Kurva retensi orang vs retensi uang](analysis/g1_kurva_retensi.png)
+
 | Metrik | Bulan 0 | Bulan 12 | Bocor |
 |---|---:|---:|---:|
 | Retensi orang | 100,0% | **68,33%** | −31,67 pp |
 | Saldo per nasabah (indeks) | 100,0 | 87,11 | −12,89 |
 | **Retensi uang** | 100,0% | **59,53%** | **−40,47 pp** |
 
-**Dari 100 nasabah: 68 orang masih ada, tetapi hanya Rp60 dari Rp100 dananya.** Retensi biasa — yang hanya menghitung kepala — akan melaporkan "68%, masih wajar" dan menutup berkas.
+**Dari 100 nasabah: 68 orang masih ada, tetapi hanya Rp59,5 dari Rp100 dananya.** Retensi biasa — yang hanya menghitung kepala — akan melaporkan "68%, masih wajar" dan menutup berkas.
+
+![Dari Rp100 dana: Rp59,5 masih ada, Rp31,7 ikut pergi bersama nasabah, Rp8,8 menguap dari saldo](analysis/g4_dekomposisi.png)
 
 Lima temuan yang tidak terlihat dari KPI agregat:
 
-| # | Temuan | Angka |
-|---|---|---|
-| 1 | **Kebocoran uang 78,3% disebabkan nasabah pergi**, hanya 21,7% karena saldo menyusut | dekomposisi bulan ke-12: −31,67 pp vs −8,81 pp |
-| 2 | **Uang bocor deras di bulan pertama**, orang bocor merata sepanjang tahun | M1: uang −16,92 pp vs orang −10,61 pp; 62,9% kebocoran uang terjadi di 3 bulan pertama |
-| 3 | **Hipotesis "uang tidur" gugur** — dana tidak mengendap, dana keluar | 5.029 dorman (20,95%) hanya menyimpan **2,17%** DPK |
-| 4 | **Kanal membedakan uang, bukan orang** | retensi orang seragam 77,5–81,0% (3,5 pp), retensi uang terbelah **15,4 pp** (Payroll 75,2% vs Agent Mitra 59,8%) |
-| 5 | **Konsentrasi saldo tidak terbukti** | top 5% memegang 32,97%, bukan >55% seperti dugaan awal |
+| # | Temuan | Angka | Grafik terkait |
+|---|---|---|---|
+| 1 | **Dari Rp40,5 dana yang hilang, Rp31,7 ikut pergi bersama nasabah — hanya Rp8,8 karena saldo menyusut** | dekomposisi bulan ke-12, per Rp100 dana awal: Rp31,7 vs Rp8,8 | Gambar di atas |
+| 2 | **Uang bocor deras di bulan pertama**, orang bocor merata sepanjang tahun | M1: uang −16,92 pp vs orang −10,61 pp; 62,9% kebocoran uang terjadi di 3 bulan pertama | [Grafik Laju Kebocoran](analysis/g5_bentuk_waktu.png) |
+| 3 | **Hipotesis "uang tidur" gugur** — dana tidak mengendap, dana keluar | 5.029 dorman (20,95%) hanya menyimpan **2,17%** DPK | [Grafik Dorman vs DPK](analysis/g6_dorman.png) |
+| 4 | **Kanal membedakan uang, bukan orang** | retensi orang seragam 77,5–81,0% (3,5 pp), retensi uang terbelah **15,4 pp** (Payroll 75,2% vs Agent Mitra 59,8%) | [Retensi per Kanal](analysis/g2_kanal.png) · [Orang vs Uang](analysis/g3_orang_vs_uang.png) |
+| 5 | **Konsentrasi saldo tidak terbukti** | top 5% memegang 32,97%, bukan >55% seperti dugaan awal | [Konsentrasi Saldo](analysis/g7_konsentrasi.png) |
 
 Detail lengkap, tabel angka, dan rekomendasi anggaran: **[`docs/02_bab1_memo.md`](docs/02_bab1_memo.md)**
-
-![Kurva retensi orang vs uang](analysis/g1_kurva_retensi.png)
 
 ---
 
@@ -92,29 +94,35 @@ Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 g
 
 ```
 portfolio/
-├── gen/
-│   ├── generate.py          # generator terkalibrasi (deterministik, seed 20251118)
-│   ├── verify.py            # verifikasi independen — baca ulang CSV, hitung ulang dari nol
-│   ├── run_dq.py            # menjalankan 10 uji kualitas data
-│   ├── explore_bab1.py      # eksplorasi kohort (skrip yang membongkar cacat desain)
-│   ├── bab1_analysis.py     # analisis Bab 1 — menulis 10 tabel ke analysis/
-│   ├── bab1_charts.py       # 3 grafik Bab 1
-│   ├── run_promo_probe.py   # menjalankan Q1–Q3 template uji promo
-│   └── h2_lab.py            # laboratorium H2 — 3 prasyarat, 2 dunia, 200 estimasi
-├── sql/
-│   ├── 00_schema_bigquery.sql   # DDL + view metrik resmi
-│   ├── 10_dq_tests.sql          # 10 uji kualitas data (T01–T10)
-│   └── 20_promo_effect.sql      # spesifikasi uji efek kampanye bunga (template)
-├── docs/
-│   ├── 00_dataset_card.md       # kartu dataset: sumber, kalibrasi, batasan, etika (v1.1)
-│   ├── 01_calibration_report.md # target publik vs hasil dataset, per metrik (v1.1)
-│   ├── 02_bab1_memo.md          # memo Bab 1 — temuan & rekomendasi
-│   ├── 03_kamus_istilah.md      # glosarium bahasa awam
-│   └── 04_lab_h2.md             # laporan laboratorium H2 — vonis atas alatnya
-├── analysis/                    # keluaran Bab 1: 10 CSV + 3 PNG + summary.json
-├── lab/                         # keluaran laboratorium: 6 CSV + run.log
-└── data/                        # TIDAK di-commit: 143 MB, dibangun ulang dari seed
+├── gen/                          # DAPUR: semua kode yang membangun & menguji
+│   ├── generate.py               # generator terkalibrasi (deterministik, seed 20251118)
+│   ├── verify.py                 # verifikasi independen — baca ulang CSV, hitung ulang dari nol
+│   ├── run_dq.py                 # menjalankan 10 uji kualitas data
+│   ├── explore_bab1.py           # eksplorasi kohort (skrip yang membongkar cacat desain)
+│   ├── bab1_analysis.py          # analisis Bab 1 — menulis tabel ke analysis/
+│   ├── bab1_charts.py            # grafik Bab 1 (g1–g7)
+│   ├── run_promo_probe.py        # menjalankan Q1–Q3 template uji promo
+│   ├── h2_lab.py                 # laboratorium H2 — 3 prasyarat, 2 dunia, 200 estimasi
+│   └── lab_h2_charts.py          # grafik hasil lab (g8)
+├── sql/                          # BAHASA QUERY: definisi tabel & uji
+│   ├── 00_schema_bigquery.sql    # DDL + view metrik resmi
+│   ├── 10_dq_tests.sql           # 10 uji kualitas data (T01–T10)
+│   └── 20_promo_effect.sql       # spesifikasi uji efek kampanye bunga (template)
+├── docs/                         # KERTAS: yang dibaca manusia
+│   ├── 00_dataset_card.md        # kartu dataset: sumber, kalibrasi, batasan, etika (v1.1)
+│   ├── 01_calibration_report.md  # target publik vs hasil dataset, per metrik (v1.1)
+│   ├── 02_bab1_memo.md           # memo Bab 1 — temuan, rekomendasi, RFM, market basket, LTV
+│   ├── 03_kamus_istilah.md       # glosarium bahasa awam
+│   ├── 04_lab_h2.md              # laporan laboratorium H2 — vonis atas alatnya
+│   └── 05_peta_repo.md           # peta repo untuk pembaca non-teknis: file mana nyambung ke mana
+├── analysis/                     # HASIL: tabel & grafik yang dikutip memo
+├── lab/                          # HASIL: keluaran laboratorium (grid, ringkasan, log)
+└── data/                         # BAHAN: 143 MB, tidak di-commit, dibangun ulang dari seed
 ```
+
+**Alur satu arah:** `data/` → `gen/*_analysis.py` → `analysis/*.csv` → `docs/02_bab1_memo.md` → `README.md`. Tidak ada panah yang berbalik: dokumen tidak pernah menjadi sumber angka, hanya pembaca angka.
+
+> **Pertama kali membuka repo ini?** Baca **[`docs/05_peta_repo.md`](docs/05_peta_repo.md)** — peta seluruh file dan hubungannya, ditulis tanpa jargon.
 
 **Kenapa `data/` tidak disimpan.** Yang berharga dari dataset sintetis adalah **resepnya**, bukan hasilnya. `gen/generate.py` dengan seed tetap menghasilkan 143 MB identik dalam ~90 detik. Menyimpannya di repo berarti mengunggah 143 MB yang bisa dibangun ulang kapan saja — dan setiap kali model dikalibrasi ulang, 143 MB baru menumpuk lagi. Yang tetap disimpan: `data/_calibration.json` (3 KB) sebagai bukti target vs hasil, dan seluruh `analysis/` sebagai keluaran yang benar-benar dipakai di memo.
 
@@ -157,9 +165,21 @@ Seed tetap → hasil deterministik dan dapat diaudit ulang.
 5. **Tidak ada klaim kausal.** Semua pernyataan adalah asosiasi dan dekomposisi aritmetika, kecuali disebut eksplisit.
 6. **Katalog tarif ≠ tarif yang dibayar.** Promo 4,00% (Jul–Sep 2025) tercatat di `product_rates.csv` tetapi tidak pernah diterapkan ke transaksi bunga; tarif terealisasi datar 2,4–2,5% sepanjang tahun. Konsekuensinya H2 tidak dapat diuji pada dataset versi ini — buktinya di [`analysis/promo_rate_realized.csv`](analysis/promo_rate_realized.csv) dan memo §7.
 
+## 8. Batasan Promo & Inferensi Kausal
+
+> **Data sintetis ini tidak memungkinkan estimasi kausal tentang dampak promo bunga.** Alasan tiga:
+
+1. **Tidak ada penanda eksposur per nasabah.** Dataset historis tidak menyimpan `campaign_id` per nasabah, sehingga tidak bisa dibuat *treatment* dan *group control*. Tanpa dua grup, pertanyaan "apa efek promo?" hanya bisa dijawab dengan asosiasi saja.
+2. **Tarif katalog tidak pernah dibayar.** `promo_rate_realized.csv` menunjukkan katalog 4,00% tetapi bunga yang sebenarnya dibayar rata-rata **2,49%** Seluruh tahun. Rasio katalog vs realizasi melonjak dari ~0,68 di luar jendela ke **0,62** di dalam jendela promo — persis sebesar kenaikan 4,00% → 2,50% yang never dibayar. Nasabah tidak pernah menerima tarif yang disejakai.
+3. **Tidak ada patahan struktural di Oktober.** `promo_window.csv` menunjukkan pertumbuhan saldo Sep→Des **+9,2%** (akhir bulan) dan **+8,1%** (rata-rata) — sejalan dengan tren sebelum promo, bukan lonjakan mundur yang dikarenakan promo. Jika dana itu "uang sewaan", seharusnya rontok begitu tarif kembali ke 3,50%. Saldo hanya mengikuti tren waktu.
+
+**Kesimpulan:** Angka "retensi 101,45%" di memo §7 hanyalah tren pertumbuhan alami, bukan efek promo. Untuk inferensi kausal di data nyata, catatan data harus menyertai: (a) `campaign_id` per nasabah, (b) catatan kapan bunga promo dikreditkan, dan (c) grup control yang terdefinisi.
+
 ---
 
-## 8. Prinsip kerja
+---
+
+## 9. Prinsip kerja
 
 1. **Rasio publik dikalibrasi presisi.** CASA 70,74% · LDR 92,32% · NPL 1,82% · DPK Rp34.806.000.010.000 · kredit Rp32.133.999.307.000 — cocok dengan laporan tahunan sampai satuan rupiah. Kalau tidak cocok, modelnya yang salah.
 2. **Perilaku yang tidak diketahui publik dibiarkan muncul sendiri.** Retensi, konsentrasi, dan dormansi adalah *output* proses generatif — bukan angka target. Karena itu layak disebut temuan; kalau saya menyetelnya agar dramatis, itu bukan temuan lagi.

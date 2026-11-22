@@ -18,6 +18,8 @@ Bayangkan Anda membeli timbangan badan, lalu menimbang barang yang **sudah Anda 
 
 Inilah yang saya lakukan pada uji promo. Data sintetis = karung berlabel. Efek promo = berat yang saya tentukan sendiri. Alat uji = timbangan. Tanpa langkah ini, angka "101,45% retensi" dari template SQL punya status yang sama dengan timbangan tanpa pernah dikalibrasi: terlihat meyakinkan, tidak diketahui benar atau tidak.
 
+![Hasil uji pemulihan laboratorium H2: estimasi vs kebenaran](lab/g8_recovery.png)
+
 ---
 
 ## 2. Tiga prasyarat yang dulu tidak ada

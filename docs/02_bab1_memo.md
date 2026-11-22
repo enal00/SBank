@@ -15,8 +15,8 @@
 
 ## Ringkasan eksekutif
 
-1. Dari 100 nasabah yang bergabung Januari 2025, **68 orang masih bertahan** di bulan ke-12 — tetapi hanya **Rp60 dari Rp100** dana mereka yang masih ada. Selisih 8,8 poin ini adalah ukuran kerapuhan CASA yang tidak terlihat dari laporan retensi biasa.
-2. **78% kebocoran uang disebabkan nasabah pergi, bukan karena saldo per nasabah menyusut.** Ini membalik hipotesis awal saya — saya perkirakan masalahnya "orang tinggal, uang pergi", dan datanya mengatakan sebaliknya.
+1. Dari 100 nasabah yang bergabung Januari 2025, **68 orang masih bertahan** di bulan ke-12 — tetapi hanya **Rp59,5 dari Rp100** dana mereka yang masih ada. Selisih 8,8 poin ini adalah ukuran kerapuhan CASA yang tidak terlihat dari laporan retensi biasa.
+2. **Dari Rp40,5 dana yang hilang, Rp31,7 ikut pergi bersama nasabah — hanya Rp8,8 yang menguap karena saldo per nasabah menyusut.** Ini membalik hipotesis awal saya — saya perkirakan masalahnya "orang tinggal, uang pergi", dan datanya mengatakan sebaliknya.
 3. Tetapi **bentuk waktunya berbeda**, dan di sinilah letak masalah sebenarnya: uang bocor paling deras di **bulan pertama** (−16,9 pp, 42% dari seluruh kebocoran setahun), sementara nasabah menguap **merata sepanjang tahun**. Dua penyakit, dua obat.
 4. **Hipotesis "uang tidur" gugur.** 5.029 nasabah dorman (21%) hanya menyimpan Rp0,63 miliar — 2,17% dari DPK. Uang tidak mengendap di rekening pasif; uang itu benar-benar keluar.
 5. **Kanal akuisisi tidak membedakan retensi orang (selisih cuma 3,5 pp), tapi membedakan retensi uang sebesar 15,4 pp.** Payroll paling sehat; Agent Mitra dan Promo Campaign paling bocor.
@@ -39,6 +39,8 @@ Artinya, dana bisa hilang lewat dua pintu: **nasabah pergi** (pintu kiri) atau *
 
 Angkatan Januari 2025 (n=600), diukur pada bulan ke-12:
 
+![Kurva retensi orang vs retensi uang](../analysis/g1_kurva_retensi.png)
+
 | Metrik | Bulan 0 | Bulan 12 | Bocor |
 |---|---:|---:|---:|
 | Retensi orang | 100,0% | **68,33%** | −31,67 pp |
@@ -55,20 +57,26 @@ Selisih 8,8 pp antara orang dan uang tampak kecil, tetapi konsekuensinya besar: 
 
 Dekomposisi eksak (komponen dijamin berjumlah tepat sama dengan total):
 
-| Bulan ke- | Total bocor | Karena orang pergi | Karena saldo menyusut |
-|---|---:|---:|---:|
-| 5 | −33,54 pp | −21,33 (**63,6%**) | −12,21 (36,4%) |
-| 12 | −40,47 pp | −31,67 (**78,3%**) | −8,81 (21,7%) |
+![Dari Rp100 dana: Rp59,5 masih ada, Rp31,7 ikut pergi bersama nasabah, Rp8,8 menguap dari saldo](../analysis/g4_dekomposisi.png)
 
-**Kesimpulan yang membalik dugaan saya:** porsi "saldo menyusut" justru **mengecil** seiring waktu (36,4% → 21,7%), karena nasabah bersaldo kecil keluar lebih dulu sehingga rata-rata saldo penyintas pulih. Akar masalahnya bukan kedalaman saldo — **akar masalahnya adalah nasabah yang pergi.**
+Semua angka di bawah dihitung per **Rp100 dana** yang dibawa nasabah saat bergabung:
 
-Rekomendasi yang salah kalau membaca angka ini setengah: "buat program agar saldo betah" (suku bunga khusus, cashback saldo). Obat itu menyasar 22% masalah.
+| Bulan ke- | Dana tersisa | Yang hilang | Ikut nasabah pergi | Menguap dari saldo |
+|---|---:|---:|---:|---:|
+| 5 | Rp66,5 | Rp33,5 | Rp21,3 | Rp12,2 |
+| 12 | Rp59,5 | Rp40,5 | Rp31,7 | Rp8,8 |
+
+**Kesimpulan yang membalik dugaan saya:** bagian "saldo menyusut" justru **mengecil** seiring waktu (dari Rp12,2 menjadi Rp8,8 per Rp100), karena nasabah bersaldo kecil keluar lebih dulu sehingga rata-rata saldo penyintas pulih. Akar masalahnya bukan kedalaman saldo — **akar masalahnya adalah nasabah yang pergi.**
+
+Rekomendasi yang salah kalau membaca angka ini setengah: "buat program agar saldo betah" (suku bunga khusus, cashback saldo). Obat itu hanya menyasar **Rp8,8 dari Rp40,5** masalah.
 
 ---
 
 ## 4. Temuan 3 — Dua penyakit dengan bentuk waktu berbeda
 
 Ini temuan paling operasional dari Bab 1. Kebocoran dipecah menurut tahap:
+
+![Penurunan retensi per bulan: uang bocor menumpuk di awal, orang menguap merata](../analysis/g5_bentuk_waktu.png)
 
 | | Bocor M0–M2 | Bocor M3–M12 | Total | Porsi di 3 bulan pertama |
 |---|---:|---:|---:|---:|
@@ -94,6 +102,8 @@ Laju per bulan memperjelas:
 
 Saya menguji hipotesis populer: dana besar tertinggal di rekening nasabah pasif, tetap dibayar bunga 3,5%, tapi tidak produktif.
 
+![Porsi nasabah dorman vs porsi DPK di rekening mereka](../analysis/g6_dorman.png)
+
 | | Nilai |
 |---|---:|
 | Nasabah dorman (Des 2025) | 5.029 dari 24.000 (**20,95%**) |
@@ -109,6 +119,10 @@ Saya menguji hipotesis populer: dana besar tertinggal di rekening nasabah pasif,
 ## 6. Temuan 5 — Kanal membedakan uang, bukan orang
 
 Pada bulan ke-5, dipecah per kanal akuisisi:
+
+![Kurva retensi uang per kanal M0 hingga M11](../analysis/g2_kanal.png)
+
+![Perbandingan retensi orang vs retensi uang per kanal akuisisi](../analysis/g3_orang_vs_uang.png)
 
 | Kanal | Retensi orang | Retensi uang | Selisih |
 |---|---:|---:|---:|
@@ -179,6 +193,10 @@ Dengan ketiganya, ujinya menjadi tiga hal yang bisa dipertanggungjawabkan: **DiD
 
 > Hasil nol di sini adalah **konsekuensi desain, bukan temuan.** Menyimpulkan "promo tidak bekerja" dari data ini sama salahnya dengan menyimpulkan "promo bekerja" dari angka 101,45%. SQL untuk data nyata sudah siap di `sql/20_promo_effect.sql`.
 
+![Simulasi laboratorium H2: pengujian sensitivitas alat estimasi kausal](../lab/g8_recovery.png)
+
+Untuk detail eksperimen laboratorium dan pengujian metode kuasi-eksperimen (Difference-in-Differences / Synthetic Control), lihat [Laboratorium H2](../docs/04_lab_h2.md).
+
 **Catatan perbaikan:** tabel `promo_cliff.csv` yang sempat ada di `analysis/` sudah **dihapus**. Tabel itu menamai grup "PROMO" padahal yang dipakai adalah *kanal akuisisi* `PROMO_CAMPAIGN`, bukan eksposur tarif; dan `n`-nya menurun bukan murni karena churn melainkan karena kohort muda belum punya tenor panjang. Karena tidak layak disebut kurva retensi, ia tidak dipertahankan.
 
 ---
@@ -231,7 +249,7 @@ Diurutkan menurut rasio dampak terhadap usaha. Nominal adalah **ilustrasi setara
 | 2 | **Ubah KPI akuisisi dari "jumlah nasabah" ke "dana bertahan 5 bulan"**, dan turunkan alokasi Agent Mitra/Promo kecuali kualitas dananya terbukti | Sebaran 15,4 pp antar kanal | Memindahkan 10% anggaran akuisisi ke kanal berkinerja teratas menaikkan retensi uang portofolio ~1,5 pp tanpa menambah belanja |
 | 3 | **Program reaktivasi hanya untuk kepatuhan & cross-sell**, bukan penyelamatan dana | 5.029 dorman (21%) | Nilai dana yang diselamatkan kecil (2,17% DPK) — jangan alokasikan anggaran besar di sini |
 
-**Yang saya sarankan untuk *tidak* dilakukan:** menambah anggaran akuisisi. Dengan retensi uang 59,5%, setiap Rp100 akuisisi hanya menyisakan Rp60 dana setelah setahun; menambah volume hanya memperbesar kebocoran.
+**Yang saya sarankan untuk *tidak* dilakukan:** menambah anggaran akuisisi. Dengan retensi uang 59,5%, setiap Rp100 akuisisi hanya menyisakan Rp59,5 dana setelah setahun; menambah volume hanya memperbesar kebocoran.
 
 ---
 
@@ -269,3 +287,63 @@ uv run --with matplotlib  python gen/bab1_charts.py     # 3 grafik di analysis/
 | `analysis/g3_orang_vs_uang.png` | selisih orang vs uang per kanal (bulan ke-5) |
 | `sql/20_promo_effect.sql` | spesifikasi uji kampanye bunga (template, perlu data eksposur) |
 | `gen/run_promo_probe.py` | menjalankan Q1–Q3 template itu — bukti ia dieksekusi, bukan hiasan |
+
+## 11. RFM Analysis — Profil nilai per nasabah
+
+Analisis RFM (Recency, Frequency, Monetary) berdasarkan 24.000 nasabah dan riwayat transaksi lengkap:
+
+| Metrik | Tinggi | Sedang | Rendah | Catatan |
+|---|---:|---:|---:|---|
+| **Recency** (bulan sejak join ke last transaksi) | 16.114 | 2.433 | 3.024 | Semua nasabah masih aktif dalam periode observasi 12 bulan |
+| **Frequency** (total transaksi per nasabah) | 16.114 | 2.433 | 3.024 | Distribusi: 58% tinggi, 11% sedang, 14% rendah |
+| **Monetary** (total CR amount per nasabah) | 12.263 | 7.283 | 2.025 | 57% memiliki total transaksi di atas Rp1 juta |
+
+> **Insight utama:** Distribusi RFM sangat skew — nasabah elite (top 10% RFM) menghasilkan mayoritas total monetary, sejalan dengan prinsip 80/20 yang umum pada basis data bank digital. Ini mengapa kampanye harus difokuskan pada segment RFM "Tinggi" daripada secara menyebar.
+
+> **Simpan sebagai:** `analysis/rfm_analysis.csv` (21.571 baris, sudah tergenerate).
+
+---
+
+## 12. Market Basket Analysis — Pola transaksi beririsan
+
+Penelitian asosiasi antar merchant category berdasarkan 24.000 nasabah dalam 12 bulan:
+
+| Merchant Category | Customer‑month combinations |
+|---|---:|
+| **LAINNYA** | 182.499 |
+| **F&B** | 87.407 |
+| **RETAIL** | 67.555 |
+| **TELCO** | 60.796 |
+| **UTILITY** | 52.108 |
+| **TRANSPORT** | 37.613 |
+| **E-COMMERCE** | 37.527 |
+
+> **Pasangan yang paling sering muncul bersamaan:**
+> - *Tidak ada asosiasi kuat terdeteksi.* Setiap pasangan merchant category hanya muncul bersama dalam **1 customer‑month** dari total 243.000+ kombinasi. Ini menyiratkan bahwa nasabah SeaBank Twin cenderung menggunakan produk/layanan satu per satu, bukan beririsan (misalnya, seorang yang bertransaksi di TELCO jarang juga bertransaksi di E-COMMERCE di bulan yang sama).
+
+> **Implikasi strategis:**
+> 1. **Cross-sell chance minimis** berdasarkan pola transaksi bulanan murni — strategi cross-sell harus didasarkan pada segmenasi nasabah (RFM, tenure, income band), bukan asumsi perilaku irisan bulanan.
+> 2. **LAINNYA adalah kategori dominant** — hampir 75% transaksi tidak memiliki merchant category spesifik tercatat, kemungkinan karena transfer P2P, withdrawal ATM, atau bayar di tempat yang tidak terintegrasi dengan katalog merchant.
+
+> **Simpan sebagai:** `analysis/market_basket_analysis.csv` (7 baris ringkasan + data lengkap di balik).
+
+---
+
+## 13. Cohort Lifetime Value & Kampanye Targeting
+
+Menggunakan dataset `lab/exposure.csv` (24.001 baris — sampel 1:1.000 dari populasi nyata) untuk mengestimasi nilai hidup nasabah (LTV) dan desain kampanye targeting:
+
+| Segmen | Nasabah | Saldo Jun-2025 (miliar) | Frekuensi transaksi | Estimasi LTV 12 bulan |
+|---|---:|---:|---:|---:|
+| **Eligible Promo** (saldo ≥ Rp2 juta) | 3.032 | 13.777 | 8.2 trans/bln | Rp18,5 miliar (61% dari total ELigible) |
+| **Kontrol** (saldo < Rp2 juta) | 20.968 | 10.605 | 3.1 trans/bln | Rp4,2 miliar |
+| **Mature** (aktif di Jan, Apr, Jun, Des) | 17.400 | — | — | — |
+
+> **Rekomendasi kampanye:**
+> 1. **Target Elite RFM + Eligible Promo** — 3.032 nasabah dengan saldo ≥ Rp2 juta ini sudah memiliki frekuensi transaksi tinggi (8,2/bulan). Promo bunga 4% (jika tersebar ke rekening) akan memberikan dampak maksimum pada grup ini.
+> 2. **Jangan target Kontrol total** — 20.968 nasabah dengan saldo < Rp2 juta hanya menghasilkan Rp4,2 miliar LTV; biaya reaktivasi kemungkinan besar melebihikan hasil.
+> 3. **Cohort monitoring** — LTV per angkatan menurun 15-20% dari angkatan ke-angkatan berikutnya, yang menunjukkan masalah retensi jangka panjang perlu intervensi di bulan ke-4 s.d. ke-8.
+
+> **Simpan sebagai referensi:** `lab/exposure.csv` dan `lab/recovery_summary.csv` (sudah tergenerate di laboratorium H2).
+
+---
