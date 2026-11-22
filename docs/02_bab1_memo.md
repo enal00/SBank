@@ -288,62 +288,72 @@ uv run --with matplotlib  python gen/bab1_charts.py     # 3 grafik di analysis/
 | `sql/20_promo_effect.sql` | spesifikasi uji kampanye bunga (template, perlu data eksposur) |
 | `gen/run_promo_probe.py` | menjalankan Q1–Q3 template itu — bukti ia dieksekusi, bukan hiasan |
 
-## 11. RFM Analysis — Profil nilai per nasabah
+## 11. Segmentasi RFM (Recency, Frequency, Monetary)
 
-Analisis RFM (Recency, Frequency, Monetary) berdasarkan 24.000 nasabah dan riwayat transaksi lengkap:
+Menggunakan dataset `data/transactions.csv` (1.075.753 transaksi sepanjang 2025 dari 24.000 nasabah) dengan tanggal acuan **31 Desember 2025**. Skor 1–5 dihitung berbasis kuintil peringkat (5 = 20% teratas):
 
-| Metrik | Tinggi | Sedang | Rendah | Catatan |
-|---|---:|---:|---:|---|
-| **Recency** (bulan sejak join ke last transaksi) | 16.114 | 2.433 | 3.024 | Semua nasabah masih aktif dalam periode observasi 12 bulan |
-| **Frequency** (total transaksi per nasabah) | 16.114 | 2.433 | 3.024 | Distribusi: 58% tinggi, 11% sedang, 14% rendah |
-| **Monetary** (total CR amount per nasabah) | 12.263 | 7.283 | 2.025 | 57% memiliki total transaksi di atas Rp1 juta |
+| Segmen | Aturan RFM | Nasabah | % Nasabah | % Uang Masuk | Median Uang Masuk | Saldo Juni (miliar) |
+|---|---|---:|---:|---:|---:|---:|
+| **Juara** | R≥4, F≥4, M≥4 | 4.725 | 19,7% | 42,1% | Rp17.367.949 | Rp10,577 |
+| **Perlu perhatian** | umum | 4.799 | 20,0% | 24,4% | Rp7.041.224 | Rp3,582 |
+| **Loyal** | R≥3, F≥4 | 4.610 | 19,2% | 18,5% | Rp5.447.796 | Rp5,843 |
+| **Berisiko pergi** | R≤2, F≥3 | 2.296 | 9,6% | 8,2% | Rp5.156.388 | Rp2,616 |
+| **Hilang** | R=1, F≤2 | 518 | 2,2% | 2,3% | Rp7.437.044 | Rp0,345 |
+| **Tidur** | R≤2, F≤2, M≤2 | 3.733 | 15,6% | 1,9% | Rp1.399.137 | Rp0,750 |
+| **Tidak boleh hilang** | R≤2, F≥4, M≥4 | 167 | 0,7% | 1,4% | Rp15.912.324 | Rp0,363 |
+| **Baru / potensial** | R≥4, F≤2 | 723 | 3,0% | 1,2% | Rp3.094.321 | Rp0,026 |
+| **Tanpa transaksi 2025** | F=0 | 2.429 | 10,1% | 0,0% | Rp0 | Rp0,281 |
 
-> **Insight utama:** Distribusi RFM sangat skew — nasabah elite (top 10% RFM) menghasilkan mayoritas total monetary, sejalan dengan prinsip 80/20 yang umum pada basis data bank digital. Ini mengapa kampanye harus difokuskan pada segment RFM "Tinggi" daripada secara menyebar.
+> **Temuan kunci:**
+> 1. **Aturan 80/20 terkonfirmasi:** Top 10% nasabah menguasai **47,6% total uang masuk** (Rp131,1 miliar dari Rp275,4 miliar).
+> 2. **Segmen "Tidur" dan "Tanpa transaksi" menyerap 25,7% nasabah**, tetapi hanya menyumbang 1,9% uang masuk dan Rp1,03 miliar saldo Juni.
+> 3. **Segmen "Juara" (4.725 nasabah)** memegang Rp10,58 miliar DPK (43,4% dari total DPK Juni Rp24,38 miliar) — kelompok ini wajib dipertahankan dengan layanan prioritas.
 
-> **Simpan sebagai:** `analysis/rfm_analysis.csv` (21.571 baris, sudah tergenerate).
+> **Tabel interaktif:** Seluruh 24.000 nasabah dapat dibuka, difilter, dan dicari tanpa Python lewat [`analysis/rfm_viewer.html`](../analysis/rfm_viewer.html). Ringkasan segmen tersimpan di `analysis/rfm_segments.csv` dan data per nasabah di `analysis/rfm_scored.csv`.
 
 ---
 
-## 12. Market Basket Analysis — Pola transaksi beririsan
+## 12. Market Basket Analysis (Asosiasi Merchant Category)
 
-Penelitian asosiasi antar merchant category berdasarkan 24.000 nasabah dalam 12 bulan:
+Menggunakan 182.499 transaksi per nasabah-bulan sepanjang 2025 untuk melihat kategori produk/merchant yang sering dipakai bersamaan:
 
-| Merchant Category | Customer‑month combinations |
-|---|---:|
-| **LAINNYA** | 182.499 |
-| **F&B** | 87.407 |
-| **RETAIL** | 67.555 |
-| **TELCO** | 60.796 |
-| **UTILITY** | 52.108 |
-| **TRANSPORT** | 37.613 |
-| **E-COMMERCE** | 37.527 |
+| Kategori Merchant | Transaksi | Nasabah-Bulan | % Nasabah-Bulan | Total Nominal | Average per Transaksi |
+|---|---:|---:|---:|---:|---:|
+| **LAINNYA** (P2P / ATM) | 650.785 | 182.499 | 100,0% | Rp182,1 miliar | Rp279.818 |
+| **F&B** | 119.959 | 87.407 | 47,9% | Rp34,7 miliar | Rp289.273 |
+| **RETAIL** | 84.860 | 67.555 | 37,0% | Rp25,8 miliar | Rp304.030 |
+| **TELCO** | 74.344 | 60.796 | 33,3% | Rp14,2 miliar | Rp191.004 |
+| **UTILITY** | 61.499 | 52.108 | 28,6% | Rp10,3 miliar | Rp167.482 |
+| **TRANSPORT** | 42.261 | 37.613 | 20,6% | Rp4,8 miliar | Rp113.580 |
+| **E-COMMERCE** | 42.045 | 37.527 | 20,6% | Rp3,5 miliar | Rp83.244 |
 
 > **Pasangan yang paling sering muncul bersamaan:**
-> - *Tidak ada asosiasi kuat terdeteksi.* Setiap pasangan merchant category hanya muncul bersama dalam **1 customer‑month** dari total 243.000+ kombinasi. Ini menyiratkan bahwa nasabah SeaBank Twin cenderung menggunakan produk/layanan satu per satu, bukan beririsan (misalnya, seorang yang bertransaksi di TELCO jarang juga bertransaksi di E-COMMERCE di bulan yang sama).
+> - F&B + LAINNYA (87.407 nasabah-bulan), RETAIL + LAINNYA (67.555 nasabah-bulan), TELCO + LAINNYA (60.796 nasabah-bulan).
+> - Nilai *lift* untuk semua pasangan berada di kisaran **1,00** — artinya frekuensi muncul bersamaan persis sesuai dengan frekuensi masing-masing kategori secara independen. **Tidak ditemukan hubungan asosiasi khusus** antara dua kategori spesifik (misalnya, pengguna TELCO tidak lebih sering membeli E-COMMERCE dibanding populasi umum).
 
 > **Implikasi strategis:**
-> 1. **Cross-sell chance minimis** berdasarkan pola transaksi bulanan murni — strategi cross-sell harus didasarkan pada segmenasi nasabah (RFM, tenure, income band), bukan asumsi perilaku irisan bulanan.
-> 2. **LAINNYA adalah kategori dominant** — hampir 75% transaksi tidak memiliki merchant category spesifik tercatat, kemungkinan karena transfer P2P, withdrawal ATM, atau bayar di tempat yang tidak terintegrasi dengan katalog merchant.
+> 1. **Cross-sell produk tidak bisa mengandalkan bundel kategori** (misal: "diskon promo telco bagi pembeli e-commerce") karena tidak ada kebiasaan belanja yang beririsan di atas kebetulan acak.
+> 2. **Segmentasi RFM dan pendapatan jauh lebih prediktif** daripada kategori belanja bulanan dalam menentukan respons promosi.
 
-> **Simpan sebagai:** `analysis/market_basket_analysis.csv` (7 baris ringkasan + data lengkap di balik).
+> **Simpan sebagai:** `analysis/basket_categories.csv` (7 kategori) dan `analysis/basket_pairs.csv` (21 pasangan kombinasi).
 
 ---
 
 ## 13. Cohort Lifetime Value & Kampanye Targeting
 
-Menggunakan dataset `lab/exposure.csv` (24.001 baris — sampel 1:1.000 dari populasi nyata) untuk mengestimasi nilai hidup nasabah (LTV) dan desain kampanye targeting:
+Menggunakan dataset `lab/exposure.csv` (24.001 nasabah dengan variabel `eligible` dan `saldo_jun_idr`) untuk mengestimasi nilai hidup nasabah (LTV 12 bulan) dan desain kampanye targeting:
 
 | Segmen | Nasabah | Saldo Jun-2025 (miliar) | Frekuensi transaksi | Estimasi LTV 12 bulan |
 |---|---:|---:|---:|---:|
-| **Eligible Promo** (saldo ≥ Rp2 juta) | 3.032 | 13.777 | 8.2 trans/bln | Rp18,5 miliar (61% dari total ELigible) |
-| **Kontrol** (saldo < Rp2 juta) | 20.968 | 10.605 | 3.1 trans/bln | Rp4,2 miliar |
-| **Mature** (aktif di Jan, Apr, Jun, Des) | 17.400 | — | — | — |
+| **Eligible Promo** (saldo ≥ Rp2 juta) | 3.032 | Rp13,777 | 8,2 trans/bln | Rp18,5 miliar (81,5% dari total LTV) |
+| **Kontrol** (saldo < Rp2 juta) | 20.968 | Rp10,605 | 3,1 trans/bln | Rp4,2 miliar (18,5% dari total LTV) |
+| **Total Populasi** | 24.000 | Rp24,382 | 3,7 trans/bln | Rp22,7 miliar |
 
 > **Rekomendasi kampanye:**
-> 1. **Target Elite RFM + Eligible Promo** — 3.032 nasabah dengan saldo ≥ Rp2 juta ini sudah memiliki frekuensi transaksi tinggi (8,2/bulan). Promo bunga 4% (jika tersebar ke rekening) akan memberikan dampak maksimum pada grup ini.
-> 2. **Jangan target Kontrol total** — 20.968 nasabah dengan saldo < Rp2 juta hanya menghasilkan Rp4,2 miliar LTV; biaya reaktivasi kemungkinan besar melebihikan hasil.
-> 3. **Cohort monitoring** — LTV per angkatan menurun 15-20% dari angkatan ke-angkatan berikutnya, yang menunjukkan masalah retensi jangka panjang perlu intervensi di bulan ke-4 s.d. ke-8.
+> 1. **Fokus pada 3.032 nasabah Eligible Promo** — kelompok ini memegang 56,5% DPK Juni dan menghasilkan Rp18,5 miliar estimasi LTV dengan frekuensi transaksi 8,2×/bulan. Alokasi anggaran promosi harus diarahkan ke 12,6% populasi ini.
+> 2. **Hindari reaktivasi massal pada 20.968 nasabah Kontrol** — LTV rata-rata per nasabah hanya Rp200.000/tahun; biaya penjangkauan (SMS/WhatsApp/iklan) kemungkinan besar memakan marjin.
+> 3. **Integrasi RFM + Eligible:** Nasabah yang masuk segmen **Juara + Eligible** (sekitar 2.100 nasabah) adalah benteng utama DPK yang harus mendapat prioritas *retention offer* sebelum bunga promo berakhir.
 
-> **Simpan sebagai referensi:** `lab/exposure.csv` dan `lab/recovery_summary.csv` (sudah tergenerate di laboratorium H2).
+> **Simpan sebagai referensi:** `analysis/rfm_scored.csv` (data RFM per nasabah), `lab/exposure.csv`, dan [`analysis/rfm_viewer.html`](../analysis/rfm_viewer.html) (interaktif).
 
 ---
