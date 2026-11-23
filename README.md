@@ -212,3 +212,58 @@ Seed tetap → hasil deterministik dan dapat diaudit ulang.
 ---
 
 ---_Lisensi: kode MIT. Data sintetis, bebas dipakai dengan atribusi._
+<file_sep>## 4. Bab 4 — Sintesis & Rekomendasi Strategis
+
+### Pertanyaan Portofolio: "Di mana menaruh rupiah berikutnya — agar NIM terjaga tanpa menaikkan NPL di atas toleransi?"
+
+Jawaban yang dihasilkan dari seluruh analisis Bab I-IV:
+
+| Tanya Jawab | Jawaban Data | Rekomendasi Tindak Lanjut |
+|---|---|---|
+| **1. Pertumbuhan kredit mana yang aman?** | H3 DITOLAK — 69,6% kenaikan dari Tier A+B (sekitar Rp557,5 juta dari Rp800,9 jt total ekspansi). Tier C+D hanya 29,1% kenaikan. | Fokus ekspansi ke mitra Tier A dan B. Jangan paksa kredit ke Tier C+D. |
+| **2. Bisa berapa kredit baru tanpa melewati NPL 1,82%?** | **Rp3,01 miliar** (headroom bertahap, +100% buku per mitra ke P010/P004/P006). | Terapkan skenario "bertahap": P010 (+Rp0,65 M) + P004 (+Rp2,32 M) + P006 (+Rp0,04 M). |
+| **3. Mitra mana yang boleh ditambah kredit?** | Hanya P010, P004, P006 (NPL di bawah 5%, risiko terendah). | **DILARANG** menambah kredit ke P008 (NPL-nya 5,04%, sudah melewati ambang OJK 5,00%). |
+| **4. Produk kredit langsung apa yang harus diprioritaskan?** | Produk **PAYROLL** punya NPL 1,48% (sangat aman). Produk **KTA** punya NPL 4,92% (berbahaya). | Alihkan fokus kredit langsung ke produk payroll. Batasan risk NPL 1,82% lebih mudah terpenuhi. |
+| **5. LDR mana yang seharusnya digunakan?** | Laporan publik SeaBank FY2025: **92,32%**. Data internal ledger menghasilkan **LDR 111%** (mustahil untuk bank dengan CAR 23,29%). | Selalu gunakan angka publik 92,32% untuk laporan eksternal/INTERNAL discourse. Jangan mengandalkan LDR dari ledger internal. |
+| **6. NPL gabungan mitra + kredit langsung akurat?** | **1,82%** (cocok dengan indikator publik). Outstanding Mitra (Rp29,481 M) + Kredit Langsung (Rp2,653 M) = Rp32,134 M. NPL gabungan Rp0,585 M = 1,82%. | Struktur data sudah kaliberisasi — bisa digunakan untukpresentasi ke stakeholders atau regulator. |
+
+---
+
+### 4.1 Alokasi Rupiah Berikutnya (Budget Allocation Recommendation)
+
+Jika SeaBank ingin menambah **Rp3,01 miliar** portofolio kredit dengan ambang NPL maksimum 1,82%:
+
+| Prioritas | Mitra | Kuota Kredit | NPL Target Akhar | Catatan |
+|---|---|---:|---:|---|
+| **1** | P010 (Tier C) | **+Rp0,65 M** | 1,82% | Mitra risiko terendah di Tier C |
+| **2** | P004 (Tier C/B) | **+Rp2,32 M** | 1,82% | Buku utama, paling fleksibel |
+| **3** | P006 (Tier C) | **+Rp0,04 M** | 1,82% | Penjaga portofolio variasi |
+| **DILARANG** | P008 (Tier D) | **0** | 5,04% | Sudah melewati ambang regulator OJK |
+| **Status Quo** | Seluruh Mitra | — | 1,69% | Sudah di bawah ambang, tapi "uang diam" |
+
+**Total Ekspansi Terbatas: Rp3,01 M**
+
+---
+
+### 4.2 Jalan Singkat 3 Menit untuk Interviewer
+
+Jika interviewer hanya punya 3 menit, arahkan mereka ke:
+
+1. **Baca §14 di memo** (`docs/02_bab1_memo.md#14-kredit--risiko-mitra-bab-3`): H3 DITOLAK + detail angka
+2. **Lihat grafik g10_tier_contribution.png**: Visualisasi konsentrasi risiko per tier
+3. **Lihat grafik g11_headroom.png**: Simulasi headroom alokasi kredit baru
+4. **Lihat tabel status hipotesis** (section 3 README): H3 status, H2 hasil, H1a/b temuan
+5. **Baca summary bisnis di atas**: 6 poin jawaban "di mana menaruh rupiah berikutnya"
+
+---
+
+### 4.3 Ringkasan Eksekutif untuk Stakeholder
+
+- **Kredit naik dari mitra yang AMAN (Tier A+B), BUKAN dari risiko tinggi (Tier C&D).**
+- **Headroom kredit baru maksimal Rp3,01 M** pada ambang NPL 1,82%, dengan alokasi bertahap ke 3 mitra hanya.
+- **P008 (Tier D) dihentikan segera** dari penambah kredit — NPL-nya 5,04% sudah berbahaya.
+- **Produk payroll adalah jalur terbaik kredit langsung** (NPL 1,48% vs KTA 4,92%).
+- **LDR 92,32% publik, jangan 111% dari ledger** — ini sudah diverifikasi dengan laporan tahunan SeaBank FY2025.
+- **4 temuan kualitas data** harus dicatat transparan sebelum analisis digunakan perencanaan bisnis.
+
+---
