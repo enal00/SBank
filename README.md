@@ -84,9 +84,17 @@ Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 g
 | **0** | Fondasi & kepercayaan data | skema BigQuery, generator terkalibrasi, verifikasi independen, 10 uji kualitas data | **selesai** |
 | **1** | Kualitas CASA — retensi orang vs uang | memo 2 halaman, 10 tabel, 3 grafik, 2 berkas SQL | **selesai** |
 | **1b** | Laboratorium H2 — kalibrasi alat uji promo | simulator 2 dunia, 200 estimasi pemulihan, MDE, uji placebo | **selesai** |
-| 2 | Segmentasi & nilai nasabah | RFM perilaku, nilai seumur, segmentasi yang bisa dieksekusi | berikutnya |
-| 3 | Kredit & risiko mitra | NPL per mitra, konsentrasi risiko, kualitas agunan | — |
+| 2 | Segmentasi & nilai nasabah | RFM 9 segmen, keranjang belanja (vonis: tidak dapat disimpulkan), LTV 12 bulan, viewer HTML 24.000 nasabah | **selesai** |
+| 3 | Kredit & risiko mitra | NPL per mitra, konsentrasi risiko, kualitas agunan | berikutnya |
 | 4 | Sintesis | jawaban atas pertanyaan portofolio: alokasi rupiah berikutnya | — |
+
+### Bab 2 sekilas — detail di [memo §11–§13](docs/02_bab1_memo.md#11-segmentasi-rfm-recency-frequency-monetary)
+
+- **10% nasabah menguasai 47,6% uang masuk.** Segmen *Juara* (4.725 orang = 19,7%) menyumbang 42,1% uang masuk dan memegang **Rp10,58 miliar DPK (43,4%)**.
+- **Segmen kecil, nilai besar:** *Tidak boleh hilang* hanya **167 orang (0,7%)**, tetapi median uang masuknya **Rp15,9 juta** — tertinggi kedua setelah *Juara*.
+- **Target retention yang paling tajam:** **1.579 nasabah** yang sekaligus *Juara* **dan** eligible promo memegang **Rp7,01 miliar (28,7% DPK)**.
+- **Keranjang belanja: vonis "tidak dapat disimpulkan".** Kategori merchant diundi acak oleh generator — tiket rata-rata nyaris identik di 7 kategori (Rp437–558 ribu) dan *lift* seluruh pasangan ≤ 1,07. Bukan bukti nasabah anti-bundel; buktinya data tidak punya sinyal untuk diuji.
+- **Buka tabelnya tanpa Python:** [`analysis/rfm_viewer.html`](analysis/rfm_viewer.html) — 24.000 nasabah, cari/filter/urut, klik dua kali.
 
 ---
 
@@ -103,7 +111,11 @@ portfolio/
 │   ├── bab1_charts.py            # grafik Bab 1 (g1–g7)
 │   ├── run_promo_probe.py        # menjalankan Q1–Q3 template uji promo
 │   ├── h2_lab.py                 # laboratorium H2 — 3 prasyarat, 2 dunia, 200 estimasi
-│   └── lab_h2_charts.py          # grafik hasil lab (g8)
+│   ├── lab_h2_charts.py          # grafik hasil lab (g8)
+│   ├── bab2_rfm.py               # RFM dari transaksi mentah → 9 segmen + keranjang belanja
+│   ├── build_rfm_viewer.py       # membangun viewer HTML mandiri (24.000 nasabah)
+│   ├── audit_consistency.py      # cek rujukan file & angka dokumen vs CSV sebelum commit
+│   └── verify_concentration.py   # hitung ulang konsentrasi saldo dari ledger (juru timbang kedua)
 ├── sql/                          # BAHASA QUERY: definisi tabel & uji
 │   ├── 00_schema_bigquery.sql    # DDL + view metrik resmi
 │   ├── 10_dq_tests.sql           # 10 uji kualitas data (T01–T10)
@@ -150,6 +162,14 @@ uv run --with duckdb python gen/run_promo_probe.py
 
 # 5. Laboratorium H2 — kalibrasi alat uji (≈90 detik)
 uv run --with duckdb --with numpy python gen/h2_lab.py
+
+# 6. Bab 2: RFM + keranjang belanja, lalu bangun viewer HTML
+uv run python gen/bab2_rfm.py
+uv run python gen/build_rfm_viewer.py
+#    hasil: analysis/rfm_scored.csv, rfm_segments.csv, basket_*.csv, rfm_viewer.html
+
+# 7. Sebelum commit / pindah bab: cek rujukan file & angka dokumen vs CSV
+uv run python gen/audit_consistency.py
 ```
 
 Seed tetap → hasil deterministik dan dapat diaudit ulang.
@@ -170,7 +190,7 @@ Seed tetap → hasil deterministik dan dapat diaudit ulang.
 > **Data sintetis ini tidak memungkinkan estimasi kausal tentang dampak promo bunga.** Alasan tiga:
 
 1. **Tidak ada penanda eksposur per nasabah.** Dataset historis tidak menyimpan `campaign_id` per nasabah, sehingga tidak bisa dibuat *treatment* dan *group control*. Tanpa dua grup, pertanyaan "apa efek promo?" hanya bisa dijawab dengan asosiasi saja.
-2. **Tarif katalog tidak pernah dibayar.** `promo_rate_realized.csv` menunjukkan katalog 4,00% tetapi bunga yang sebenarnya dibayar rata-rata **2,49%** Seluruh tahun. Rasio katalog vs realizasi melonjak dari ~0,68 di luar jendela ke **0,62** di dalam jendela promo — persis sebesar kenaikan 4,00% → 2,50% yang never dibayar. Nasabah tidak pernah menerima tarif yang disejakai.
+2. **Tarif katalog tidak pernah dibayar.** `promo_rate_realized.csv`: tarif katalog dipasang 3,50% (Jan–Jun, Okt–Des) dan 4,00% (Jul–Sep), tetapi bunga yang benar-benar dikreditkan tetap **2,45–2,54% di semua bulan**. Rasio realisasi terhadap katalog justru **turun** dari ~0,71 di luar jendela promo ke **0,62** di dalamnya: kenaikan katalog 0,50 pp tidak pernah sampai ke rekening nasabah, dan selisihnya melebar dari ~1,0 pp menjadi ~1,5 pp.
 3. **Tidak ada patahan struktural di Oktober.** `promo_window.csv` menunjukkan pertumbuhan saldo Sep→Des **+9,2%** (akhir bulan) dan **+8,1%** (rata-rata) — sejalan dengan tren sebelum promo, bukan lonjakan mundur yang dikarenakan promo. Jika dana itu "uang sewaan", seharusnya rontok begitu tarif kembali ke 3,50%. Saldo hanya mengikuti tren waktu.
 
 **Kesimpulan:** Angka "retensi 101,45%" di memo §7 hanyalah tren pertumbuhan alami, bukan efek promo. Untuk inferensi kausal di data nyata, catatan data harus menyertai: (a) `campaign_id` per nasabah, (b) catatan kapan bunga promo dikreditkan, dan (c) grup control yang terdefinisi.

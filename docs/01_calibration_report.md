@@ -94,18 +94,20 @@ Angka ini **tidak** ditanam sebagai target. Ia muncul dari aturan perilaku di
 
 | Metrik | Hasil |
 |---|---:|
-| Pangsa saldo top 1% | 13,1% |
-| Pangsa saldo top 5% | 29,2% |
-| Pangsa saldo top 10% | 40,9% |
-| Pangsa saldo top 20% | 56,3% |
-| Saldo median | Rp721.106 |
-| Saldo rata-rata | Rp1.164.471 |
-| Akun dengan saldo < Rp100 ribu | 2,3% |
+| Pangsa saldo top 1% | 14,04% |
+| Pangsa saldo top 5% | 32,97% |
+| Pangsa saldo top 10% | 46,40% |
+| Pangsa saldo top 20% | 63,36% |
+| Saldo median | Rp654.834 |
+| Saldo rata-rata | Rp1.205.276 |
+| Akun dengan saldo < Rp100 ribu | 15,4% |
 
-Catatan jujur: konsentrasi 29,2% pada top 5% **lebih rendah** dari dugaan awal saya
-(>50%). Saya tidak menyesuaikan parameter untuk memaksa angka yang lebih dramatis —
+*Basis: `closing_balance` rekening SAVINGS per 31 Des 2025, dijumlah per nasabah (24.000 orang, total Rp28,93 miliar). Dapat dihitung ulang dengan `uv run --with duckdb python gen/verify_concentration.py`; hasilnya identik dengan `analysis/balance_concentration.csv`.*
+
+Catatan jujur: konsentrasi 32,97% pada top 5% **lebih rendah** dari dugaan awal saya
+(>55%). Saya tidak menyesuaikan parameter untuk memaksa angka yang lebih dramatis —
 yang dilaporkan adalah apa yang keluar dari model. Untuk bank digital massal dengan
-DPK per nasabah Rp1,45 juta, sebaran yang relatif rata justru masuk akal.
+DPK per nasabah ~Rp1,2 juta, sebaran yang relatif rata justru masuk akal.
 
 ## 7. Reproduksi
 

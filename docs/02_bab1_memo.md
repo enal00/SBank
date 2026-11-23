@@ -305,7 +305,7 @@ Menggunakan dataset `data/transactions.csv` (1.075.753 transaksi sepanjang 2025 
 | **Tanpa transaksi 2025** | F=0 | 2.429 | 10,1% | 0,0% | Rp0 | Rp0,281 |
 
 > **Temuan kunci:**
-> 1. **Aturan 80/20 terkonfirmasi:** Top 10% nasabah menguasai **47,6% total uang masuk** (Rp131,1 miliar dari Rp275,4 miliar).
+> 1. **Aturan 80/20 terkonfirmasi:** Top 10% nasabah menguasai **47,6% total uang masuk** (Rp131,0 miliar dari Rp275,4 miliar).
 > 2. **Segmen "Tidur" dan "Tanpa transaksi" menyerap 25,7% nasabah**, tetapi hanya menyumbang 1,9% uang masuk dan Rp1,03 miliar saldo Juni.
 > 3. **Segmen "Juara" (4.725 nasabah)** memegang Rp10,58 miliar DPK (43,4% dari total DPK Juni Rp24,38 miliar) — kelompok ini wajib dipertahankan dengan layanan prioritas.
 
@@ -317,23 +317,31 @@ Menggunakan dataset `data/transactions.csv` (1.075.753 transaksi sepanjang 2025 
 
 Menggunakan 182.499 transaksi per nasabah-bulan sepanjang 2025 untuk melihat kategori produk/merchant yang sering dipakai bersamaan:
 
-| Kategori Merchant | Transaksi | Nasabah-Bulan | % Nasabah-Bulan | Total Nominal | Average per Transaksi |
+| Kategori Merchant | Transaksi | Nasabah-Bulan | % Nasabah-Bulan | Volume (masuk + keluar) | Rata-rata per Transaksi |
 |---|---:|---:|---:|---:|---:|
-| **LAINNYA** (P2P / ATM) | 650.785 | 182.499 | 100,0% | Rp182,1 miliar | Rp279.818 |
-| **F&B** | 119.959 | 87.407 | 47,9% | Rp34,7 miliar | Rp289.273 |
-| **RETAIL** | 84.860 | 67.555 | 37,0% | Rp25,8 miliar | Rp304.030 |
-| **TELCO** | 74.344 | 60.796 | 33,3% | Rp14,2 miliar | Rp191.004 |
-| **UTILITY** | 61.499 | 52.108 | 28,6% | Rp10,3 miliar | Rp167.482 |
-| **TRANSPORT** | 42.261 | 37.613 | 20,6% | Rp4,8 miliar | Rp113.580 |
-| **E-COMMERCE** | 42.045 | 37.527 | 20,6% | Rp3,5 miliar | Rp83.244 |
+| **LAINNYA** (P2P / ATM) | 650.785 | 182.499 | 100,0% | Rp363,4 miliar | Rp558.383 |
+| **F&B** | 119.959 | 87.407 | 47,9% | Rp53,4 miliar | Rp445.404 |
+| **RETAIL** | 84.860 | 67.555 | 37,0% | Rp37,6 miliar | Rp443.282 |
+| **TELCO** | 74.344 | 60.796 | 33,3% | Rp32,6 miliar | Rp438.989 |
+| **UTILITY** | 61.499 | 52.108 | 28,6% | Rp27,2 miliar | Rp442.572 |
+| **TRANSPORT** | 42.261 | 37.613 | 20,6% | Rp18,7 miliar | Rp443.566 |
+| **E-COMMERCE** | 42.045 | 37.527 | 20,6% | Rp18,4 miliar | Rp437.320 |
+
+> **Tiga hal yang harus dibaca hati-hati sebelum menyimpulkan apa pun:**
+> 1. **Kolom "Volume" menjumlahkan uang masuk *dan* uang keluar.** Totalnya Rp551,4 miliar, sedangkan uang masuk 2025 hanya Rp275,4 miliar. Dua angka ini tidak boleh dibandingkan langsung.
+> 2. **"LAINNYA" 100,0% nasabah-bulan adalah artefak, bukan temuan.** Setiap nasabah-bulan pasti punya minimal satu transaksi tanpa kategori merchant (transfer P2P / tarik ATM). Angka 100% itu berarti "selalu ada", bukan "semua nasabah memilih P2P".
+> 3. **Rata-rata per transaksi nyaris sama di semua kategori (Rp437–558 ribu).** Kalau kategori benar-benar dipilih nasabah, tiket F&B seharusnya jauh lebih kecil dari tiket UTILITY. Kesamaan ini menunjukkan kategori diundi **acak** oleh generator — bukan dipilih oleh nasabah.
 
 > **Pasangan yang paling sering muncul bersamaan:**
-> - F&B + LAINNYA (87.407 nasabah-bulan), RETAIL + LAINNYA (67.555 nasabah-bulan), TELCO + LAINNYA (60.796 nasabah-bulan).
-> - Nilai *lift* untuk semua pasangan berada di kisaran **1,00** — artinya frekuensi muncul bersamaan persis sesuai dengan frekuensi masing-masing kategori secara independen. **Tidak ditemukan hubungan asosiasi khusus** antara dua kategori spesifik (misalnya, pengguna TELCO tidak lebih sering membeli E-COMMERCE dibanding populasi umum).
+> - F&B + LAINNYA (87.407 nasabah-bulan), RETAIL + LAINNYA (67.555 nasabah-bulan), TELCO + LAINNYA (60.796 nasabah-bulan) — ketiganya pasangan dengan "LAINNYA", yang otomatis muncul di semua nasabah-bulan.
+> - Pasangan **tanpa** LAINNYA tertinggi: F&B + RETAIL (34.562 nasabah-bulan, *lift* **1,07**), lalu F&B + TELCO (30.893, 1,06) dan F&B + UTILITY (26.370, 1,06). Seluruh 21 pasangan berada di rentang *lift* **1,00–1,07**.
+> - *Lift* 1,07 berarti: nasabah yang bertransaksi di F&B hanya **7% lebih sering** juga bertransaksi di RETAIL dibanding nasabah biasa. Dalam analisis keranjang belanja, *lift* di bawah 1,2 umumnya dianggap tidak layak dijadikan dasar bundel.
+
+> **Vonis: hubungan asosiasi TIDAK DAPAT DISIMPULKAN dari dataset ini.** Bukan karena nasabah terbukti tidak suka bundel, melainkan karena **kategori merchant diundi acak** oleh `gen/generate.py` pada setiap transaksi — tidak ada aturan "kalau beli kopi lalu beli bensin". Buktinya ada tiga dan saling menguatkan: (a) tiket rata-rata nyaris identik di 7 kategori, (b) *lift* seluruh pasangan ≤1,07, (c) "LAINNYA" hadir di 100% nasabah-bulan. Mencari asosiasi di data seperti ini sama dengan mencari pola di lemparan dadu.
 
 > **Implikasi strategis:**
-> 1. **Cross-sell produk tidak bisa mengandalkan bundel kategori** (misal: "diskon promo telco bagi pembeli e-commerce") karena tidak ada kebiasaan belanja yang beririsan di atas kebetulan acak.
-> 2. **Segmentasi RFM dan pendapatan jauh lebih prediktif** daripada kategori belanja bulanan dalam menentukan respons promosi.
+> 1. **Jangan bangun strategi cross-sell dari hasil ini.** Untuk benar-benar menguji asosiasi kategori, dataset perlu kategori merchant yang diturunkan dari perilaku (misalnya riwayat transaksi nyata atau aturan preferensi per nasabah), bukan diundi.
+> 2. **Yang bisa dipakai dari Bab 2 tetap RFM dan LTV** — keduanya dihitung dari nominal dan frekuensi nyata, tidak bergantung pada label kategori. Segmentasi nilai (*Juara*, *Tidak boleh hilang*) tetap berlaku; analisis keranjang belanja yang harus menunggu data yang lebih baik.
 
 > **Simpan sebagai:** `analysis/basket_categories.csv` (7 kategori) dan `analysis/basket_pairs.csv` (21 pasangan kombinasi).
 
@@ -352,7 +360,7 @@ Menggunakan dataset `lab/exposure.csv` (24.001 nasabah dengan variabel `eligible
 > **Rekomendasi kampanye:**
 > 1. **Fokus pada 3.032 nasabah Eligible Promo** — kelompok ini memegang 56,5% DPK Juni dan menghasilkan Rp18,5 miliar estimasi LTV dengan frekuensi transaksi 8,2×/bulan. Alokasi anggaran promosi harus diarahkan ke 12,6% populasi ini.
 > 2. **Hindari reaktivasi massal pada 20.968 nasabah Kontrol** — LTV rata-rata per nasabah hanya Rp200.000/tahun; biaya penjangkauan (SMS/WhatsApp/iklan) kemungkinan besar memakan marjin.
-> 3. **Integrasi RFM + Eligible:** Nasabah yang masuk segmen **Juara + Eligible** (sekitar 2.100 nasabah) adalah benteng utama DPK yang harus mendapat prioritas *retention offer* sebelum bunga promo berakhir.
+> 3. **Integrasi RFM + Eligible:** nasabah yang masuk segmen **Juara *dan* eligible promo** berjumlah **1.579 orang** — hanya **6,6% populasi**, tetapi memegang **Rp7,01 miliar** saldo Juni (**28,7% DPK**) dan menghasilkan **Rp68,6 miliar** uang masuk sepanjang 2025 (**24,9% total**). Kelompok inilah benteng DPK yang harus mendapat *retention offer* sebelum bunga promo berakhir.
 
 > **Simpan sebagai referensi:** `analysis/rfm_scored.csv` (data RFM per nasabah), `lab/exposure.csv`, dan [`analysis/rfm_viewer.html`](../analysis/rfm_viewer.html) (interaktif).
 

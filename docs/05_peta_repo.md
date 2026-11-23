@@ -14,7 +14,7 @@ Bayangkan repo ini seperti **pabrik tahu**, bukan seperti folder dokumen.
 | Di pabrik | Di repo ini |
 |---|---|
 | Gudang kedelai | `data/` — bahan mentah (143 MB CSV) |
-| Mesin & dapur | `gen/` — 9 skrip Python |
+| Mesin & dapur | `gen/` — 12 skrip Python |
 | Cetak biru & daftar periksa | `sql/` — definisi tabel + 10 uji kualitas |
 | Meja saji berisi tahu jadi | `analysis/` — tabel & grafik hasil analisis |
 | Ruang latihan menimbang | `lab/` — uji apakah alat ukur kita akurat |
@@ -37,9 +37,9 @@ Rantai itu bisa ditelusuri mundur sampai ujung. Itulah inti seluruh repo ini.
 | Folder | Bahasa awam | Isinya | Boleh diedit tangan? |
 |---|---|---|---|
 | `data/` | **Gudang bahan** | 143 MB CSV mentah: nasabah, rekening, transaksi, produk, kanal | ❌ Tidak — dibuat mesin, dibangun ulang dari seed |
-| `gen/` | **Dapur & mesin** | 9 skrip Python: pembuat data, pemeriksa, penganalisis, pembuat grafik | ✅ Ya — ini yang diedit |
+| `gen/` | **Dapur & mesin** | 12 skrip Python: pembuat data, pemeriksa, penganalisis, pembuat grafik & viewer | ✅ Ya — ini yang diedit |
 | `sql/` | **Cetak biru & daftar periksa** | Definisi tabel, 10 uji kualitas, template uji promo | ✅ Ya |
-| `analysis/` | **Meja saji** | 12 CSV + 7 PNG hasil analisis Bab 1 | ❌ Tidak — selalu ditimpa skrip |
+| `analysis/` | **Meja saji** | 14 CSV + 1 HTML + 7 PNG hasil analisis Bab 1 & 2 | ❌ Tidak — selalu ditimpa skrip |
 | `lab/` | **Ruang percobaan** | Bukti bahwa alat ukur kita akurat sebelum dipakai | ❌ Tidak — selalu ditimpa skrip |
 | `docs/` | **Papan menu** | 6 dokumen yang dibaca manusia | ✅ Ya — tapi hanya boleh *membaca* angka |
 
@@ -70,6 +70,8 @@ Ditambah dua file di akar: `README.md` (papan nama + menu utama) dan `.gitignore
    │  gen/explore_bab1.py   (mencari cacat desain)                │
    │  gen/bab1_analysis.py  ──▶ analysis/*.csv + summary.json     │
    │  gen/bab1_charts.py    ──▶ analysis/g1…g7.png                │
+   │  gen/bab2_rfm.py       ──▶ rfm_scored/segments + basket_*.csv │
+   │  gen/build_rfm_viewer.py ─▶ analysis/rfm_viewer.html         │
    └──────────────────────────────────────────────┼───────────────┘
                                                   │
    ┌──────────────────────────────────────────────▼───────────────┐
@@ -97,7 +99,7 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 
 ## 4. File per file
 
-### 4.1 `gen/` — dapur (9 mesin)
+### 4.1 `gen/` — dapur (13 mesin)
 
 | File | Bahasa awam | Peran dalam rantai |
 |---|---|---|
@@ -110,6 +112,10 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 | `run_promo_probe.py` (82 baris) | **Uji coba senjata.** Menembakkan template SQL promo ke data untuk membuktikan SQL-nya tidak error | Bukti bahwa `sql/20_promo_effect.sql` bukan hiasan |
 | `h2_lab.py` (313 baris) | **Ruang latihan menembak.** Membuat dua dunia buatan yang jawabannya sudah diketahui, lalu mengecek apakah alat kita bisa menemukan jawaban itu | Menulis `lab/*.csv`. Hasil: bias +0,41 pp, slope 1,02 |
 | `lab_h2_charts.py` | **Juru foto ruang latihan** | Menulis `lab/g8_recovery.png` |
+| `bab2_rfm.py` (305 baris) | **Tukang sortir nasabah.** Menghitung ulang R/F/M dari 1.075.753 transaksi mentah, memberi skor 1–5 berbasis kuintil, lalu menempel label 9 segmen | Menulis `analysis/rfm_scored.csv`, `rfm_segments.csv`, `basket_categories.csv`, `basket_pairs.csv` |
+| `build_rfm_viewer.py` (330 baris) | **Pencetak katalog interaktif.** Menanam seluruh 24.000 baris ke dalam satu file HTML supaya bisa dibuka tanpa Python | Menulis `analysis/rfm_viewer.html` |
+| `audit_consistency.py` | **Pemeriksa sebelum berangkat.** Memastikan setiap file yang disebut di dokumen benar-benar ada, dan angka di dokumen cocok dengan CSV | Dijalankan sebelum setiap commit |
+| `verify_concentration.py` | **Juru timbang kedua untuk konsentrasi.** Menghitung ulang pangsa saldo top 1/5/10/20% langsung dari ledger, tanpa memakai `bab1_analysis.py` | Harus identik dengan `analysis/balance_concentration.csv`; kalau beda, ada yang basi |
 
 ### 4.2 `sql/` — cetak biru (3 file)
 
@@ -119,7 +125,7 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 | `10_dq_tests.sql` | **Daftar periksa 10 poin** (T01–T10). Tiap tes mengembalikan vonis: lulus atau tidak | Dijalankan oleh `gen/run_dq.py` |
 | `20_promo_effect.sql` | **Resep uji promo — berstatus TEMPLATE.** Ditulis lengkap, tetapi sengaja **tidak** dipakai untuk menyimpulkan | Kejujuran yang disengaja: alatnya siap, datanya belum ada |
 
-### 4.3 `analysis/` — meja saji (12 CSV + 7 PNG)
+### 4.3 `analysis/` — meja saji (14 CSV + 1 HTML + 7 PNG)
 
 | File | Isinya | Dikutip di |
 |---|---|---|
@@ -134,8 +140,11 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 | `summary.json` | **5 angka kunci** dalam satu file kecil | Rujukan cepat |
 | `promo_rate_realized.csv` | Tarif promo yang **benar-benar dibayar** vs yang diiklankan | Memo §7, README §8 |
 | `promo_window.csv` | Saldo di dalam vs di luar jendela promo | Memo §7 |
-| `rfm_analysis.csv` | 21.571 baris: Recency / Frequency / Monetary per nasabah | Memo §11 |
-| `market_basket_analysis.csv` | 7 kategori merchant + frekuensi kemunculan | Memo §12 |
+| `rfm_scored.csv` | **24.000 baris** — satu baris per nasabah: skor R/F/M (1–5), kode RFM, dan nama segmen | Memo §11, viewer |
+| `rfm_segments.csv` | **9 baris** — agregat per segmen: jumlah nasabah, % nasabah, % uang masuk, median uang masuk, saldo Juni | Memo §11 |
+| `basket_categories.csv` | **7 baris** — transaksi, nasabah-bulan, volume, dan tiket rata-rata per kategori merchant | Memo §12 |
+| `basket_pairs.csv` | **21 baris** — pasangan kategori yang muncul bersamaan + nilai *lift* | Memo §12 |
+| `rfm_viewer.html` | **Tabel interaktif 24.000 nasabah** — cari, filter segmen, urut kolom. Buka dengan klik dua kali, tanpa Python & tanpa internet | Memo §11, §13 |
 | `g1…g7.png` | 7 gambar: kurva retensi, kanal, dekomposisi Rp100, bentuk waktu, uang tidur, konsentrasi | Tersebar di memo §2–§6 & README |
 
 ### 4.4 `lab/` — ruang percobaan (6 CSV + 1 PNG + 1 log)
