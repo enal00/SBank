@@ -137,6 +137,22 @@ for seg_name in ("top 1%", "top 5%", "top 10%", "top 20%"):
     if seg_name in ("top 5%", "top 20%"):
         must_contain("README.md", want, f"README: {seg_name} = {want}")
 
+# 2h. Bab 3 — kredit & risiko mitra
+port_m = list(csv.DictReader(open("analysis/h3_portofolio_bulanan.csv", encoding="utf-8")))
+des_port = port_m[-1]
+(ok if des_port["outstanding_miliar"] == "29.481" else fail)(f"outstanding Des 2025 = Rp{des_port['outstanding_miliar']} M")
+(ok if des_port["npl_pct"] == "1.69" else fail)(f"rasio NPL Des 2025 = {des_port['npl_pct']}%")
+must_contain("docs/02_bab1_memo.md", "29,481 miliar", "outstanding Des 2025 di memo")
+must_contain("docs/02_bab1_memo.md", "1,69%", "rasio NPL Des 2025 di memo")
+
+tier_m = {r["tier"]: r for r in csv.DictReader(open("analysis/h3_ringkasan_tier.csv", encoding="utf-8"))}
+(ok if tier_m["D"]["npl_pct"] == "5.04" else fail)(f"NPL Tier D = {tier_m['D']['npl_pct']}%")
+must_contain("docs/02_bab1_memo.md", "5,04%", "NPL Tier D di memo")
+
+alok_m = {r["strategi"]: r for r in csv.DictReader(open("analysis/h3_headroom_alokasi.csv", encoding="utf-8"))}
+(ok if alok_m["bertahap, tiap mitra maks +100% buku"]["tambahan_kredit_miliar"] == "3.006" else fail)("headroom bertahap = 3.006 M")
+must_contain("docs/02_bab1_memo.md", "3,01 miliar", "headroom bertahap di memo")
+
 # ─────────────────────────── 3. sisa file lama ───────────────────────────
 print("\n[3] Rujukan ke file yang sudah dihapus")
 for dead in ("rfm_analysis.csv", "market_basket_analysis.csv"):

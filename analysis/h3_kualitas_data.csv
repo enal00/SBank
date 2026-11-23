@@ -1,0 +1,5 @@
+temuan,angka,konsekuensi
+Rekening DEPOSITO tanpa saldo bulanan di account_monthly_balances,3.600 akun · principal Rp17.211 M,"DPK ledger hanya tabungan Rp28,93 M → LDR ledger 111%, mustahil dengan CAR 23,29%. LDR tidak dipakai dari ledger; acuan memakai laporan tahunan 92,32%."
+active_borrowers bergerak acak (tidak sejalan dengan portofolio),7.933–517.044 peminjam. 156 nilai berbeda,Tidak dipakai untuk tiket rata-rata atau produktivitas mitra.
+"revenue_share_pct bernilai 0,56–0,75 tanpa satuan yang jelas",0.557–0.746,"Kalau persen, mustahil untuk skema bagi hasil; kalau pecahan (56–75%), masuk akal. Karena ambigu, analisis risk-adjusted return tidak dibangun di atas kolom ini."
+npl_ratio di file mitra adalah salinan npl_balance/outstanding_balance,konsisten 100%,Dihitung ulang dari komponen mentah; tidak ada kontradiksi.

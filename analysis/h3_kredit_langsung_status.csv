@@ -1,0 +1,5 @@
+status,jumlah_pinjaman,outstanding_miliar
+CURRENT,1580,2.081
+DPD30,246,0.322
+DPD90,109,0.162
+DEFAULT,65,0.088

@@ -14,7 +14,7 @@ Bayangkan repo ini seperti **pabrik tahu**, bukan seperti folder dokumen.
 | Di pabrik | Di repo ini |
 |---|---|
 | Gudang kedelai | `data/` — bahan mentah (143 MB CSV) |
-| Mesin & dapur | `gen/` — 12 skrip Python |
+| Mesin & dapur | `gen/` — **14 skrip Python** (dulu 12) |
 | Cetak biru & daftar periksa | `sql/` — definisi tabel + 10 uji kualitas |
 | Meja saji berisi tahu jadi | `analysis/` — tabel & grafik hasil analisis |
 | Ruang latihan menimbang | `lab/` — uji apakah alat ukur kita akurat |
@@ -99,7 +99,7 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 
 ## 4. File per file
 
-### 4.1 `gen/` — dapur (13 mesin)
+### 4.1 `gen/` — dapur (15 mesin)
 
 | File | Bahasa awam | Peran dalam rantai |
 |---|---|---|
@@ -114,6 +114,8 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 | `lab_h2_charts.py` | **Juru foto ruang latihan** | Menulis `lab/g8_recovery.png` |
 | `bab2_rfm.py` (305 baris) | **Tukang sortir nasabah.** Menghitung ulang R/F/M dari 1.075.753 transaksi mentah, memberi skor 1–5 berbasis kuintil, lalu menempel label 9 segmen | Menulis `analysis/rfm_scored.csv`, `rfm_segments.csv`, `basket_categories.csv`, `basket_pairs.csv` |
 | `build_rfm_viewer.py` (330 baris) | **Pencetak katalog interaktif.** Menanam seluruh 24.000 baris ke dalam satu file HTML supaya bisa dibuka tanpa Python | Menulis `analysis/rfm_viewer.html` |
+| `bab3_credit.py` | **Koki utama Bab 3.** Mengolah portofolio kredit 13 mitra dan kredit langsung, menghitung ilusi NPL, konsentrasi risiko per tier, dan simulasi headroom alokasi kredit | Menulis `analysis/h3_*.csv` |
+| `bab3_charts.py` | **Juru foto Bab 3.** Visualisasi ilusi rasio NPL, konsentrasi risiko per tier, dan headroom alokasi kredit | Menulis `analysis/g9_npl_dilemma.png`, `g10_tier_contribution.png`, `g11_headroom.png` |
 | `audit_consistency.py` | **Pemeriksa sebelum berangkat.** Memastikan setiap file yang disebut di dokumen benar-benar ada, dan angka di dokumen cocok dengan CSV | Dijalankan sebelum setiap commit |
 | `verify_concentration.py` | **Juru timbang kedua untuk konsentrasi.** Menghitung ulang pangsa saldo top 1/5/10/20% langsung dari ledger, tanpa memakai `bab1_analysis.py` | Harus identik dengan `analysis/balance_concentration.csv`; kalau beda, ada yang basi |
 
@@ -125,7 +127,7 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 | `10_dq_tests.sql` | **Daftar periksa 10 poin** (T01–T10). Tiap tes mengembalikan vonis: lulus atau tidak | Dijalankan oleh `gen/run_dq.py` |
 | `20_promo_effect.sql` | **Resep uji promo — berstatus TEMPLATE.** Ditulis lengkap, tetapi sengaja **tidak** dipakai untuk menyimpulkan | Kejujuran yang disengaja: alatnya siap, datanya belum ada |
 
-### 4.3 `analysis/` — meja saji (14 CSV + 1 HTML + 7 PNG)
+### 4.3 `analysis/` — meja saji (**19 CSV** + 1 HTML + **10 PNG**)
 
 | File | Isinya | Dikutip di |
 |---|---|---|
@@ -145,7 +147,17 @@ Itu bukan kebetulan — itu aturan (lihat §5).
 | `basket_categories.csv` | **7 baris** — transaksi, nasabah-bulan, volume, dan tiket rata-rata per kategori merchant | Memo §12 |
 | `basket_pairs.csv` | **21 baris** — pasangan kategori yang muncul bersamaan + nilai *lift* | Memo §12 |
 | `rfm_viewer.html` | **Tabel interaktif 24.000 nasabah** — cari, filter segmen, urut kolom. Buka dengan klik dua kali, tanpa Python & tanpa internet | Memo §11, §13 |
-| `g1…g7.png` | 7 gambar: kurva retensi, kanal, dekomposisi Rp100, bentuk waktu, uang tidur, konsentrasi | Tersebar di memo §2–§6 & README |
+| `h3_portofolio_bulanan.csv` | Portofolio kredit 13 mitra per bulan (12 baris) | Memo §14.1 |
+| `h3_ringkasan_tier.csv` | Agregat per risk tier (4 baris) | Memo §14.1 |
+| `h3_ringkasan_mitra.csv` | Mitra per baris: outstanding, npl, headroom | Memo §14.1 |
+| `h3_headroom_skenario.csv` | 3 skenario headroom (1,82% / 3% / 5%) | Memo §15.1 |
+| `h3_headroom_alokasi.csv` | 5 strategi alokasi headroom | Memo §15.1 |
+| `h3_kredit_langsung.csv` | Kredit langsung per produk (3 baris) | Memo §16 |
+| `h3_kualitas_data.csv` | 4 temuan kualitas data | Memo §16 |
+| `h9_npl_dilemma.png` | Ilusi rasio NPL (outstanding +45,7% vs NPL +29,1% vs rasio turun 1,90→1,69%) | Memo §14.2 |
+| `g10_tier_contribution.png` | Konsentrasi risiko per tier (Tier C+D = 21,2% buku, 47,7% NPL) | Memo §14.2 |
+| `g11_headroom.png` | Alokasi headroom kredit baru pada ambang 1,82% | Memo §15.1 |
+| `g1…g7.png` | 7 grafik Bab 1 tetap | Tersebar di memo §2–§6 & README |
 
 ### 4.4 `lab/` — ruang percobaan (6 CSV + 1 PNG + 1 log)
 

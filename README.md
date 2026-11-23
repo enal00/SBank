@@ -71,7 +71,7 @@ Detail lengkap, tabel angka, dan rekomendasi anggaran: **[`docs/02_bab1_memo.md`
 | H1a | CASA rapuh karena **terkonsentrasi** di segelintir nasabah | **DITOLAK** | top 5% = 32,97% saldo; top 20% = 63,36% |
 | H1b | CASA rapuh karena **tidak lengket** | **TERBUKTI** | retensi uang 12 bulan = 59,53% |
 | H2 | Sebagian DPK buru bunga — naik saat promo, pergi setelahnya | **TIDAK DAPAT DIUJI** | tarif promo 4,00% tidak pernah dibayar (terealisasi datar 2,48%), tidak ada penanda eksposur per nasabah, tidak ada patahan di Oktober — lihat [memo §7](docs/02_bab1_memo.md#7-temuan-6--promo-bunga-4-tidak-dapat-dijawab-dan-ini-alasannya) dan [`analysis/promo_rate_realized.csv`](analysis/promo_rate_realized.csv). **Alat ujinya sudah lulus kalibrasi** di [lab H2](docs/04_lab_h2.md): bias +0,41 pp, slope 1,02, placebo ≈ 0 |
-| H3 | Pertumbuhan kredit digerakkan mitra berisiko tinggi | **BELUM** | dijadwalkan Bab 3 |
+| H3 | Pertumbuhan kredit digerakkan mitra berisiko tinggi | **DITOLAK** | 69,6% pertumbuhan disburse digerakkan Tier A+B (69,6% dari +Rp800,9 jt). Namun risiko sangat terkonsentrasi: Tier C+D = 21,2% buku tapi menyumbang 47,7% NPL (Tier D NPL 5,04%) — lihat [memo §14](docs/02_bab1_memo.md#14-kredit--risiko-mitra-bab-3) |
 
 Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 gagal di tiga titik sekaligus: **tarif promo 4,00% tidak pernah diterapkan ke bunga yang benar-benar dibayar** (terealisasi tetap 2,47–2,50% selama Jul–Sep), **tidak ada penanda siapa yang terpapar kampanye**, dan **saldo tidak punya mekanisme untuk merespons tarif**. Ujinya tetap bisa dijalankan — dan sudah dijalankan. Hasil 101,45% itu hanya mengukur "tidak ada yang terjadi", bukan "promo berhasil".
 
@@ -85,7 +85,7 @@ Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 g
 | **1** | Kualitas CASA — retensi orang vs uang | memo 2 halaman, 10 tabel, 3 grafik, 2 berkas SQL | **selesai** |
 | **1b** | Laboratorium H2 — kalibrasi alat uji promo | simulator 2 dunia, 200 estimasi pemulihan, MDE, uji placebo | **selesai** |
 | 2 | Segmentasi & nilai nasabah | RFM 9 segmen, keranjang belanja (vonis: tidak dapat disimpulkan), LTV 12 bulan, viewer HTML 24.000 nasabah | **selesai** |
-| 3 | Kredit & risiko mitra | NPL per mitra, konsentrasi risiko, kualitas agunan | berikutnya |
+| 3 | Kredit & risiko mitra | Pertumbuhan kredit + analisis NPL & headroom pilihan | **selesai** |
 | 4 | Sintesis | jawaban atas pertanyaan portofolio: alokasi rupiah berikutnya | — |
 
 ### Bab 2 sekilas — detail di [memo §11–§13](docs/02_bab1_memo.md#11-segmentasi-rfm-recency-frequency-monetary)

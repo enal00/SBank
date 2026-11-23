@@ -1,0 +1,14 @@
+partner_id,partner_name,tier,outstanding_miliar,npl_miliar,npl_pct,disburse_jan_juta,disburse_des_juta,tumbuh_pct,headroom_182_miliar,headroom_300_miliar,headroom_500_miliar,dibatasi_npl_182
+P001,Multifinance Alfa,A,6.683,0.049,0.74,414.4,573.6,38.4,,,,TIDAK
+P002,Multifinance Bravo,A,5.183,0.05,0.96,327.7,444.0,35.5,,,,TIDAK
+P003,Multifinance Charlie,B,3.955,0.067,1.69,220.5,343.1,55.6,,,,TIDAK
+P005,Multifinance Echo,B,2.728,0.036,1.3,182.9,232.3,27.0,,,,TIDAK
+P004,Multifinance Delta,C,2.319,0.078,3.34,113.1,203.8,80.2,2.587,112.712,,YA
+P006,P2P Foxtrot,C,2.046,0.083,4.04,93.4,181.1,93.8,1.777,37.298,,YA
+P007,P2P Golf,B,1.773,0.032,1.82,104.7,152.9,46.0,1039.678,,,YA
+P011,Bank Kilo,A,1.25,0.007,0.56,85.5,106.3,24.3,,,,TIDAK
+P008,P2P Hotel,D,1.227,0.062,5.04,64.0,107.2,67.5,1.225,19.012,2630.401,YA
+P012,Bank Lima,B,0.815,0.009,1.13,52.6,69.7,32.6,,,,TIDAK
+P009,Koperasi India,B,0.815,0.01,1.22,46.8,70.5,50.7,,,,TIDAK
+P010,Koperasi Juliett,C,0.652,0.015,2.34,35.0,56.8,62.3,7.511,,,YA
+P013,Legacy Portfolio,A,0.035,0.0,0.0,2.9,2.9,0.0,,,,TIDAK

@@ -1,0 +1,4 @@
+ambang,anggaran_risiko_juta,total_headroom_miliar,mitra_penerima,npl_mitra_pct,headroom_vs_buku_sekarang_pct,catatan,mitra_di_atas_ambang
+"1,82% (level SeaBank FY2025)",39.4,7.581,P010 Koperasi Juliett,2.34,1163.0,seluruh anggaran risiko habis di mitra termurah (r_p - T = 0.52 pp),4
+"3,00% (selera risiko internal)",387.3,113.912,P004 Multifinance Delta,3.34,4912.0,seluruh anggaran risiko habis di mitra termurah (r_p - T = 0.34 pp),3
+"5,00% (acuan industri)",976.9,,-,,,"1 mitra di atas ambang tetapi semuanya <0,10 pp di atasnya — model tidak stabil; secara praktis NPL tidak mengikat",1

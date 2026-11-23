@@ -365,3 +365,82 @@ Menggunakan dataset `lab/exposure.csv` (24.001 nasabah dengan variabel `eligible
 > **Simpan sebagai referensi:** `analysis/rfm_scored.csv` (data RFM per nasabah), `lab/exposure.csv`, dan [`analysis/rfm_viewer.html`](../analysis/rfm_viewer.html) (interaktif).
 
 ---
+
+## 14. Kredit & Risiko Mitra (Bab 3 — H3 & H3b)
+
+Bab ini menguji penyaluran kredit lewat 13 mitra (*channeling/joint financing*) dan 2.000 fasilitas kredit langsung sepanjang tahun 2025:
+
+### 14.1 Hasil Uji Hipotesis 3: Pertumbuhan Kredit Tidak Digerakkan Mitra Berisiko Tinggi
+
+> **Vonis Hipotesis H3: DITOLAK.** Pertumbuhan disburse kredit mitra tidak digerakkan oleh segmen berisiko tinggi (Tier C dan D), melainkan didominasi oleh mitra Tier A dan B.
+
+| Risk Tier | Disburse Jan-2025 | Disburse Des-2025 | Pertumbuhan | Porsi Kenaikan Disburse | Outstanding Des-2025 | Porsi Buku | Rasio NPL Des-2025 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| **Tier A** (Risiko Sangat Rendah) | Rp830,4 juta | Rp1.126,8 juta | +35,7% | **37,0%** | Rp13,151 miliar | 44,6% | 0,81% |
+| **Tier B** (Risiko Rendah) | Rp607,5 juta | Rp868,6 juta | +43,0% | **32,6%** | Rp10,086 miliar | 34,2% | 1,53% |
+| **Tier C** (Risiko Sedang) | Rp241,5 juta | Rp441,7 juta | +82,9% | 25,0% | Rp5,017 miliar | 17,0% | 3,50% |
+| **Tier D** (Risiko Tinggi) | Rp64,0 juta | Rp107,2 juta | +67,5% | 5,4% | Rp1,227 miliar | 4,2% | **5,04%** |
+| **Total Portofolio Mitra** | **Rp1.743,5 juta** | **Rp2.544,2 juta** | **+45,9%** | **100,0%** | **Rp29,481 miliar** | **100,0%** | **1,69%** |
+
+> **Detail Utama:**
+> 1. **Mitra Tier A dan B menyumbang 69,6% dari total kenaikan disburse** (+Rp557,5 juta dari total ekspansi Rp800,9 juta per bulan) dan menguasai **78,8% total buku outstanding** (Rp23,237 miliar).
+> 2. Pertumbuhan disburse Tier C (+82,9%) dan Tier D (+67,5%) memang persentasenya lebih tinggi, namun berasal dari basis awal yang kecil (dari Rp64,0 juta menjadi Rp107,2 juta untuk Tier D).
+
+---
+
+### 14.2 Ilusi Rasio NPL & Konsentrasi Risiko Mitra
+
+![Ilusi Rasio NPL](../analysis/g9_npl_dilemma.png)
+
+> **Temuan 1: Ilusi Rasio NPL (NPL nominal naik, rasio justru membaik).**
+> Sepanjang tahun 2025, nominal NPL dalam rupiah **naik +29,1%** (dari Rp385,2 juta menjadi Rp497,1 juta). Namun, rasio NPL Gross justru **tampak membaik dari 1,90% menjadi 1,69%**. Hal ini murni disebabkan oleh penyebut (buku outstanding) yang tumbuh jauh lebih pesat (**+45,7%** dari Rp20,229 miliar ke Rp29,481 miliar).
+
+![Konsentrasi Risiko per Tier](../analysis/g10_tier_contribution.png)
+
+> **Temuan 2: Konsentrasi Risiko Terbuka Lebar di Tier C & D.**
+> Segmen berisiko tinggi (Tier C + Tier D) hanya memegang **21,2% dari total buku kredit** (Rp6,244 miliar), namun menyumbang **47,7% dari seluruh rupiah NPL** (Rp237,2 juta).
+> * **Tier D (P008 P2P Hotel)** secara khusus mencatatkan rasio NPL **5,04%** (Rp61,8 juta NPL dari Rp1,227 miliar outstanding) — telah **menembus ambang toleransi regulator OJK sebesar 5,00%**.
+
+---
+
+## 15. Analisis Headroom Kredit Baru pada Ambang NPL 1,82%
+
+Untuk menjawab pertanyaan *berapa rupiah kredit baru yang dapat ditumbuhkan tanpa melewati toleransi NPL*, dikembangkan model *headroom* berbasis formula:
+
+$$L = \frac{T \cdot \text{OUT}_0 - \text{NPL}_0}{r_p - T}$$
+
+Di mana $T$ adalah ambang NPL target, $\text{OUT}_0$ dan $\text{NPL}_0$ adalah outstanding dan NPL saat ini, serta $r_p$ adalah rasio NPL dari mitra/segmen penerima kredit baru.
+
+![Alokasi Headroom Kredit Baru](../analysis/g11_headroom.png)
+
+### 15.1 Skenario Alokasi Kredit Baru (Ambang Target 1,82% — Acuan SeaBank FY2025)
+
+Pada ambang NPL **1,82%** (level NPL Gross acuan Laporan Tahunan SeaBank FY2025), "anggaran risiko" NPL yang tersisa hanya **Rp39,4 juta** ($1,82\% \times \text{Rp29,481 M} - \text{Rp497,1 jt}$). Hasil simulasi berbagai strategi alokasi kredit baru:
+
+| Strategi Alokasi Kredit Baru | Ambang Target NPL | Tambahan Kredit Baru (Headroom) | Rasio NPL Akhir | Catatan Evaluasi Bisnis |
+|---|---:|---:|---:|---|
+| **1. Bauran Sekarang** (A–D Proporsional) | 1,82% | **Rp2,948 miliar** | 1,69% | Rasio bauran sekarang (1,69%) sudah di bawah ambang; NPL tidak membatasi. |
+| **2. Merata ke Mitra di Atas Ambang** | 1,82% | **Rp2,108 miliar** | 1,82% | Alokasi merata Rp527 juta ke 4 mitra (P004, P006, P008, P010). |
+| **3. Proporsional ke Buku Tier C+D** | 1,82% | **Rp1,992 miliar** | 1,82% | Buku Tier C+D tumbuh +32%; menghabiskan seluruh anggaran risiko. |
+| **4. Optimal Teoritis** (Seluruhnya ke P010) | 1,82% | **Rp7,581 miliar** | 1,82% | Membutuhkan ekspansi +1.163% buku P010 — **tidak realistis secara operasional**. |
+| **5. Bertahap** (Maksimal +100% Buku Mitra) | 1,82% | **Rp3,006 miliar** | **1,82%** | **Rekomendasi Praktis:** P010 (+Rp0,65 M), P004 (+Rp2,32 M), P006 (+Rp0,04 M). |
+
+> **Rekomendasi Manajerial Bab 3:**
+> 1. **Terapkan Strategi Alokasi Bertahap (Skenario 5):** Menyerap anggaran risiko Rp39,4 juta secara realistis dengan meningkatkan kredit pada mitra Tier C termurah risikonya hingga batas +100% buku masing-masing, menghasilkan **+Rp3,01 miliar tambahan kredit** tanpa menembus NPL 1,82%.
+> 2. **Moratorium Kredit Baru ke P008 (Tier D):** Mengingat NPL P008 berada di level **5,04%**, penambahan kredit ke mitra ini langsung menaikkan rasio NPL portofolio secara tidak proporsional.
+> 3. **Ekspansi Kredit Langsung Produk PAYROLL:** Kredit langsung berbasis penggajian (PAYROLL) memiliki rasio NPL terendah (**1,48%**, DPD>90), jauh di bawah KTA (**4,92%**). Ekspansi kredit langsung harus difokuskan pada fasilitas Payroll.
+
+---
+
+## 16. Kualifikasi Portofolio Kredit & Kualitas Data
+
+Sebelum angka Bab 3 digunakan dalam perencanaan bisnis, terdapat 4 temuan kualitas data yang wajib dicatat secara transparan:
+
+| Temuan Kualitas Data | Angka Terdeteksi | Dampak & Perlakuan Analisis |
+|---|---|---|
+| **1. DEPOSITO Tanpa Saldo Bulanan** | 3.600 akun deposito (`principal` Rp17,211 M) tidak memiliki baris saldo bulanan di `account_monthly_balances`. | DPK pada ledger saldo bulanan hanya mencatat Tabungan (Rp28,93 M). Menggabungkan kredit (Rp32,13 M) dengan saldo tabungan menghasilkan **LDR Ledger 111%** (mustahil untuk bank dengan CAR 23,29%). **Keputusan:** LDR dari ledger tidak digunakan; laporan acuan memakai angka publik **92,32%**. |
+| **2. Pertumbuhan *Active Borrowers* Acak** | Kolom `active_borrowers` bergerak acak antara 7.933 hingga 517.044 peminjam. | Data tidak sejalan dengan pertumbuhan outstanding portofolio. **Keputusan:** Kolom ini tidak digunakan untuk mengukur produktivitas mitra atau nominal rata-rata per peminjam. |
+| **3. Kolom `revenue_share_pct` Ambigu** | Nilai berkisar 0,557 hingga 0,746 tanpa kejelasan satuan. | Jika persen (0,56%), terlalu kecil untuk skema bagi hasil; jika desimal (56%–75%), nilainya masuk akal. **Keputusan:** Analisis *risk-adjusted return* ditahan hingga satuan terkonfirmasi. |
+| **4. Integrasi Kredit Langsung & Mitra** | Total outstanding Mitra (Rp29,481 M) + Kredit Langsung (Rp2,653 M) = **Rp32,134 M**. | Total rupiah NPL gabungan = **Rp0,585 M** (NPL Gross = **1,82%**), **cocok 100%** dengan indikator publik SeaBank FY2025 (1,82%). |
+
+> **Simpan sebagai berkas hasil:** `analysis/h3_portofolio_bulanan.csv`, `analysis/h3_ringkasan_tier.csv`, `analysis/h3_ringkasan_mitra.csv`, `analysis/h3_headroom_skenario.csv`, `analysis/h3_headroom_alokasi.csv`, `analysis/h3_kredit_langsung.csv`, `analysis/h3_kualitas_data.csv`, serta grafik `analysis/g9_npl_dilemma.png`, `analysis/g10_tier_contribution.png`, `analysis/g11_headroom.png`.
