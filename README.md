@@ -245,9 +245,9 @@ Jika SeaBank ingin menambah **Rp3,01 miliar** portofolio kredit dengan ambang NP
 
 ---
 
-### 4.2 Jalan Singkat 3 Menit untuk Interviewer
+### 4.2 Jalan Singkat 3 Menit untuk gambaran umum
 
-Jika interviewer hanya punya 3 menit, arahkan mereka ke:
+Jika hanya punya 3 menit, coba baca ke:
 
 1. **Baca §14 di memo** (`docs/02_bab1_memo.md#14-kredit--risiko-mitra-bab-3`): H3 DITOLAK + detail angka
 2. **Lihat grafik g10_tier_contribution.png**: Visualisasi konsentrasi risiko per tier
