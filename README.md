@@ -86,7 +86,7 @@ Menolak menjawab satu hipotesis lebih berharga daripada memaksakan jawaban. H2 g
 | **1b** | Laboratorium H2 — kalibrasi alat uji promo | simulator 2 dunia, 200 estimasi pemulihan, MDE, uji placebo | **selesai** |
 | 2 | Segmentasi & nilai nasabah | RFM 9 segmen, keranjang belanja (vonis: tidak dapat disimpulkan), LTV 12 bulan, viewer HTML 24.000 nasabah | **selesai** |
 | 3 | Kredit & risiko mitra | Pertumbuhan kredit + analisis NPL & headroom pilihan | **selesai** |
-| 4 | Sintesis | jawaban atas pertanyaan portofolio: alokasi rupiah berikutnya | — |
+| 4 | Sintesis | jawaban atas pertanyaan portofolio: alokasi rupiah berikutnya | **selesai** |
 
 ### Bab 2 sekilas — detail di [memo §11–§13](docs/02_bab1_memo.md#11-segmentasi-rfm-recency-frequency-monetary)
 
